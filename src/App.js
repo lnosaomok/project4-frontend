@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import "materialize-css/dist/css/materialize.min.css";
+import M from "materialize-css/dist/js/materialize.min";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Login from "./layout/Login";
+import Register from "./layout/Register";
+import About from "./layout/About";
+import Navbar from "./layout/Navbar";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Navbar />
+        <div className='container-fluid'>
+          {/* <Alerts /> */}
+          <Switch>
+            {/* <PrivateRoute
+                        exact
+                        path='/collections'
+                        component={Collections}
+                      />  */}
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/about' component={About} />
+          </Switch>
+        </div>
+      </Router>
+    </>
   );
 }
 
