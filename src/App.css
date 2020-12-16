@@ -5,12 +5,13 @@
   justify-content: center;
 }
 
+body{
+  background-color: rgb(248, 240, 246);
+}
+
 #container {
   margin: 3rem auto;
-  display: flex;
-  flex-direction:column ;
-  justify-content: center;
-  align-items: center;
+  
 }
 
 #outlined-adornment-weight:not(.browser-default) {
@@ -31,8 +32,60 @@
   box-shadow: none;
 }
 
-RadioButton{
-  color:darkgrey
+
+.search-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#autocomplete-input  {
+  border: 1px solid rgb(212, 208, 208);;
+  background-color:white;
+  color: black;
+  padding-left: 20px;
+}
+
+#search-btn {
+    height: 43.5px;
+    margin-left: 5px;
+    font-family: "Glacial-Indifference", sans-serif;
+    background-color: rgb(77, 162, 201);
+
+}
+#focus-transparent:focus {
+  outline: none;
+  background-color: transparent;
+}
+
+#table {
+  width: 50%;
+}
+
+#modal1{
+  width: 80%;
+  background-color: ghostwhite;
+}
+
+#t-head {
+  font-family: 'Kanit', sans-serif;
+}
+
+.nutrition-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#nutrition {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nutrition-chips {
+  margin-bottom: 30px;
+  margin-top: 10px;
 }
 
 .check-group {
@@ -60,6 +113,20 @@ RadioButton{
 #space{
   margin-top: 2rem;
   margin-bottom: 1rem;
+}
+.side-nav {
+  width: 30vw;
+  margin-right: 1rem;
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  background-color: white;
+  overflow-y: auto;
+  max-width: 300px;
+}
+
+.container-inner {
+  display: flex;
+  flex-direction: row;
 }
 .button-btn {
   margin: 10px 0px;

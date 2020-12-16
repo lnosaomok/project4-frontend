@@ -44,7 +44,6 @@ const UpdatePreferences = (props) => {
   useEffect(async () => {
     await getUserPreferences();
   }, []);
-  console.log(userPreferences);
 
   const classes = useStyles();
   const [macroValues, setMacroValues] = React.useState({
@@ -123,7 +122,7 @@ const UpdatePreferences = (props) => {
   };
 
   return (
-    <>
+    <div class='container' id='container'>
       <h4 className='special-font'>Next, tell us your preferences</h4>
       <form
         onSubmit={(e) => {
@@ -359,7 +358,7 @@ const UpdatePreferences = (props) => {
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

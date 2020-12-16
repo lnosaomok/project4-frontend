@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
-import { withRouter } from "react-router-dom";
 
 const Register = (props) => {
   const alertContext = useContext(AlertContext);
@@ -46,7 +45,7 @@ const Register = (props) => {
     }
   };
   return (
-    <div class='container'>
+    <div class='container' id='container'>
       <div className='register'>
         <h4 className='special-font'>Create a Login</h4>
         <form

@@ -36,6 +36,13 @@ const Navbar = () => {
         <Link to='/update'> Update Preferences</Link>
       </li>
 
+      <li>
+        <Link to='/savedrecipes/0'> Saved Recipes</Link>
+      </li>
+      <li>
+        <Link to='/searchrecipes'> Search Recipes</Link>
+      </li>
+
       <li>Hello {user && user.username}</li>
       <li>
         <a onClick={onLogout}>

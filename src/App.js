@@ -9,37 +9,53 @@ import Navbar from "./components/layout/Navbar";
 import UpdatePreferences from "./components/layout/UpdatePreferences";
 import AlertState from "./context/alert/AlertState";
 import AuthState from "./context/auth/AuthState";
+import RecipesState from "./context/recipes/RecipesState";
 import UserPreferencesState from "./context/userPreferences/UserPreferencesState";
 import Alerts from "./components/alerts/Alerts";
 import setToken from "./utils/setToken";
+import SearchRecipes from "./components/recipes/SearchRecipes";
+import RecipesContext from "./context/recipes/RecipesContext";
+import SavedRecipes from "./components/recipes/SavedRecipies";
+import { useState, useEffect, useContext } from "react";
+
 function App() {
   if (localStorage.token) {
     setToken(localStorage.token);
   }
+
   return (
-    <AuthState>
-      <AlertState>
-        <UserPreferencesState>
-          <Router>
-            <Navbar />
-            <Alerts />
-            <div class='container' id='container'>
-              <Switch>
-                {/* <PrivateRoute
+    <RecipesState>
+      <AuthState>
+        <AlertState>
+          <UserPreferencesState>
+            <Router>
+              <Navbar />
+              <Alerts />
+              <div>
+                <Switch>
+                  {/* <PrivateRoute
                         exact
                         path='/collections'
                         component={Collections}
                       />  */}
-                <Route exact path='/login' component={Login} />
-                <Route exact path='/register' component={Register} />
-                <Route exact path='/about' component={About} />
-                <Route exact path='/update' component={UpdatePreferences} />
-              </Switch>
-            </div>
-          </Router>
-        </UserPreferencesState>
-      </AlertState>
-    </AuthState>
+                  <Route exact path='/login' component={Login} />
+                  <Route exact path='/register' component={Register} />
+                  <Route exact path='/about' component={About} />
+                  <Route path='/savedrecipes/:index' component={SavedRecipes} />
+
+                  <Route
+                    exact
+                    path='/searchrecipes'
+                    component={SearchRecipes}
+                  />
+                  <Route exact path='/update' component={UpdatePreferences} />
+                </Switch>
+              </div>
+            </Router>
+          </UserPreferencesState>
+        </AlertState>
+      </AuthState>
+    </RecipesState>
   );
 }
 
