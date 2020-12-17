@@ -32,30 +32,33 @@ const RecommendedRecipes = () => {
   console.log(ratings);
   return (
     <>
-      <div class='container' id='container'>
-        {" "}
-        <div id=''>
-          {loading && <Spinner />}
+      {
+        <div class='container' id='container'>
+          {" "}
+          <div id=''>
+            {loading && <Spinner />}
 
-          <div id='recommended-recipes'>
-            {" "}
-            {!loading &&
-              reccommended_recipes !== null &&
-              reccommended_recipes.map((recipe) => {
-                return (
-                  <div id='recommend-item'>
-                    <RecommendedRecipesItem
-                      recipe={recipe.message}
-                      timetoken={recipe.timetoken}
-                      ratings={ratings}
-                    />
-                  </div>
-                );
-              })}
-            ;
+            <div id='recommended-recipes'>
+              {" "}
+              {!loading &&
+                reccommended_recipes !== null &&
+                reccommended_recipes.length &&
+                reccommended_recipes.map((recipe) => {
+                  return (
+                    <div id='recommend-item'>
+                      <RecommendedRecipesItem
+                        recipe={recipe.message}
+                        timetoken={recipe.timetoken}
+                        ratings={ratings}
+                      />
+                    </div>
+                  );
+                })}
+              ;
+            </div>
           </div>
         </div>
-      </div>
+      }
     </>
   );
 };

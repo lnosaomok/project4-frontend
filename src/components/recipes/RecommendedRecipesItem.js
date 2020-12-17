@@ -53,6 +53,13 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
           return item.messageTimetoken === timetoken;
         })
       : [];
+
+  let allRatingsForRecipe =
+    recipeRatings && recipeRatings.length > 0
+      ? recipeRatings.filter((item) => {
+          return item.messageTimetoken === timetoken;
+        })
+      : [];
   recipeRatingsStars = recipeRatingsStars.filter((rating) => {
     if (ratingsArr.includes(rating.value)) {
       return rating;
@@ -74,18 +81,16 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
       : [];
 
   recipeRatingsMessages = recipeRatingsMessages.filter((rating) => {
-    if (!ratingsArr.includes(rating.value)) {
+    if (!ratingsArr.includes(rating.value) && rating.value.charAt(0) === "$") {
       return rating;
     }
   });
 
-  let messageCounts = recipeRatingsMessages.length;
+  let messageCounts = recipeRatingsMessages ? recipeRatingsMessages.length : 0;
   recipeRatingsMessages = recipeRatingsMessages.map((rating) => {
     return rating.value;
   });
 
-  console.log(messageCounts);
-  console.log(recipeRatingsMessages);
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -150,6 +155,7 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
                 recipeRatingsMessages,
                 recipeRatingsStars,
                 starCounts,
+                allRatings: allRatingsForRecipe,
               },
             }}
           >

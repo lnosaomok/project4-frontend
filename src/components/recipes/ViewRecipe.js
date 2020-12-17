@@ -20,7 +20,7 @@ import Box from "@material-ui/core/Box";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import NutritionModal from "./NutritionModal";
 import Button from "@material-ui/core/Button";
-
+import ReviewsModal from "./ReviewsModal";
 const StyledRating = withStyles({
   iconFilled: {
     color: "#ff6d75",
@@ -60,16 +60,24 @@ const ViewRecipe = (props) => {
   const classes = useStyles();
   const recipesContext = useContext(RecipesContext);
   const { saveRecipe } = recipesContext;
-  const [open, setOpen] = React.useState(false);
+  const [openNutritionModal, setOpenNutritionModal] = React.useState(false);
+  const [openReviewsModal, setOpenReviewsModal] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickNutritionModalOpen = () => {
+    setOpenNutritionModal(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseNutritionModal = () => {
+    setOpenNutritionModal(false);
   };
 
+  const handleClickReviewsModalOpen = () => {
+    setOpenReviewsModal(true);
+  };
+
+  const handleCloseReviewsModal = () => {
+    setOpenReviewsModal(false);
+  };
   const { data } = props.location;
 
   const saveRecipeItem = () => {
@@ -82,15 +90,38 @@ const ViewRecipe = (props) => {
     recipeRatingsMessages,
     recipeRatingsStars,
     starCounts,
+    allRatings,
   } = data;
-  console.log(data);
+  console.log(data.timetoken);
+
+  function groupByKey(array, key) {
+    return array.reduce((hash, obj) => {
+      if (
+        obj[key] === undefined ||
+        obj[key] === "16081765502020076" || //// exclude bad keys
+        obj[key] === "16081557291811298"
+      )
+        return hash;
+      return Object.assign(hash, {
+        [obj[key]]: (hash[obj[key]] || []).concat(obj),
+      });
+    }, {});
+  }
+  const filteredAllRatings = groupByKey(allRatings, "messageTimetoken");
+  console.log(groupByKey(allRatings, "messageTimetoken"));
   return (
     <>
       <NutritionModal
         allNutrients={data.recipe.recipe.allNutrients}
-        open={open}
-        handleClose={handleClose}
+        open={openNutritionModal}
+        handleClose={handleCloseNutritionModal}
         healthLabels={data.recipe.recipe.diet_labels}
+      />
+
+      <ReviewsModal
+        allReviews={filteredAllRatings}
+        open={openReviewsModal}
+        handleClose={handleCloseReviewsModal}
       />
       <div className='card container' id='container'>
         <div className={classes.root}>
@@ -152,7 +183,14 @@ const ViewRecipe = (props) => {
                         : `${messageCounts} Reviews`}
                     </Typography>
                     {"  "}
-                    <a href=''>Read reviews</a>
+                    <Button
+                      variant='outlined'
+                      color='primary'
+                      id='focus-Transparent'
+                      onClick={handleClickReviewsModalOpen}
+                    >
+                      View Nutrition
+                    </Button>
                   </div>
 
                   <img
@@ -165,7 +203,7 @@ const ViewRecipe = (props) => {
                   variant='outlined'
                   color='primary'
                   id='focus-Transparent'
-                  onClick={handleClickOpen}
+                  onClick={handleClickNutritionModalOpen}
                 >
                   View Nutrition
                 </Button>

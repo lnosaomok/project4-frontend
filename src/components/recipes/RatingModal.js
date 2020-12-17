@@ -8,6 +8,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Rating from "@material-ui/lab/Rating";
 import PropTypes from "prop-types";
+import M from "materialize-css/dist/js/materialize.min";
 import { withStyles } from "@material-ui/core/styles";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import Box from "@material-ui/core/Box";
@@ -15,12 +16,16 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import Typography from "@material-ui/core/Typography";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import MessagesContext from "../../context/messages/MessagesContext";
+import AuthContext from "../../context/auth/AuthContext";
+import RecipesContext from "../../context/recipes/RecipesContext";
 
 import { useState } from "react";
 
-export default function RatingModal({ open, handleClose, timetoken }) {
+export default function RatingModal({ open, handleClose, timetoken, id }) {
   const [value, setValue] = React.useState(0);
   const [ratingMessage, setRatingMessage] = useState("");
+  const recipesContext = useContext(RecipesContext);
+  const { updateRating } = recipesContext;
   const messagesContext = useContext(MessagesContext);
   const {
     pubsub: {
@@ -32,10 +37,13 @@ export default function RatingModal({ open, handleClose, timetoken }) {
       getMessageActions,
       getFile,
     },
+    pubnub,
     getReccomendedRecipes,
     reccommended_recipes,
     loading,
   } = messagesContext;
+  const authContext = useContext(AuthContext);
+  const { user } = authContext;
 
   const StyledRating = withStyles({
     iconFilled: {
@@ -45,12 +53,25 @@ export default function RatingModal({ open, handleClose, timetoken }) {
       color: "#ff3d47",
     },
   })(Rating);
-
+  console.log(id);
   const submitRating = async () => {
-    let channel = "RECCOMENDATIONS_CHANNEL";
-    await addMessageAction(channel, timetoken, value);
-    await addMessageAction(channel, timetoken, ratingMessage);
-    handleClose();
+    if (ratingMessage === "" || value === "0") {
+      M.toast({ html: "please fill in rating details" });
+    } else {
+      let channel = "RECCOMENDATIONS_CHANNEL";
+      let date = new Date();
+      let year = date.getFullYear().toString();
+      let month = date.getMonth().toString();
+      let day = date.getDay().toString();
+
+      date = `${month}/${day}/${year}`;
+      await addMessageAction(channel, timetoken, `${value}`);
+      await addMessageAction(channel, timetoken, `$${ratingMessage}`);
+      await addMessageAction(channel, timetoken, `%${date}`);
+      await addMessageAction(channel, timetoken, `@${user.username}`);
+      updateRating({ id });
+      handleClose();
+    }
   };
 
   const onChangeRatingMessage = (e) => {

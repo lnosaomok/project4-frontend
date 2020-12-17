@@ -144,6 +144,22 @@ const RecipesState = (props) => {
     dispatch({ type: CLEAR_ERRORS });
   };
 
+  const updateRating = async (formData) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      await axios.post("/api/recipes/update", formData, config);
+    } catch (err) {
+      dispatch({
+        type: GENERAL_ERROR,
+        payload: err.response.data.msg,
+      });
+    }
+  };
+
   const setNutritionObject = (obj) => {
     dispatch({
       type: SET_NUTRITION_OBJECT,
@@ -171,6 +187,7 @@ const RecipesState = (props) => {
         nutritionObject: state.nutritionObject,
         setNutritionObject,
         setHealthLabels,
+        updateRating,
       }}
     >
       {props.children}

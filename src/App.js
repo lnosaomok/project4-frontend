@@ -21,6 +21,7 @@ import { useState, useEffect, useContext } from "react";
 import RecommendedRecipes from "./components/recipes/RecommendedRecipes";
 import ViewRecipe from "./components/recipes/ViewRecipe";
 import SavedRecipesView from "./components/recipes/SavedRecipesView";
+import AllMessages from "./components/messages/AllMessages";
 function App() {
   if (localStorage.token) {
     setToken(localStorage.token);
@@ -71,6 +72,7 @@ function App() {
                       path='/showrecipe'
                       component={(props) => <SavedRecipesView {...props} />}
                     />
+                    <Route exact path='/allmessages' component={AllMessages} />
                   </Switch>
                 </div>
               </Router>

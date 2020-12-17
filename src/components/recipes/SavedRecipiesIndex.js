@@ -46,12 +46,23 @@ const useStyles = makeStyles((theme) => ({
 export default function SavedRecipesIndex(props) {
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const [openNutritionModal, setOpenNutritionModal] = React.useState(false);
+  const [openRatingsModal, setOpenRatingsModal] = React.useState(false);
+
+  const handleClickNutritionModalOpen = () => {
+    setOpenNutritionModal(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseNutritionModal = () => {
+    setOpenNutritionModal(false);
+  };
+
+  const handleClickRatingsModalOpen = () => {
+    setOpenRatingsModal(true);
+  };
+
+  const handleCloseRatingsModal = () => {
+    setOpenRatingsModal(false);
   };
 
   const recipesContext = useContext(RecipesContext);
@@ -68,7 +79,7 @@ export default function SavedRecipesIndex(props) {
     setNutritionObject,
     healthLabels,
   } = recipesContext;
-
+  console.log(saved_recipes);
   useEffect(async () => {
     await getSavedRecipes();
   }, []);
@@ -100,16 +111,17 @@ export default function SavedRecipesIndex(props) {
     saved_recipes.length > 0 ? (
       <>
         <RatingModal
-          open={open}
-          handleClose={handleClose}
+          open={openRatingsModal}
+          handleClose={handleCloseRatingsModal}
           timetoken={saved_recipes[props.match.params.index].timetoken}
+          id={saved_recipes[props.match.params.index]._id}
         />
         <NutritionModal
           allNutrients={
             saved_recipes[props.match.params.index].recipe.allNutrients
           }
-          open={open}
-          handleClose={handleClose}
+          open={openNutritionModal}
+          handleClose={handleCloseNutritionModal}
           healthLabels={
             saved_recipes[props.match.params.index].recipe.diet_labels
           }
@@ -168,20 +180,25 @@ export default function SavedRecipesIndex(props) {
                     <h4>
                       {saved_recipes[props.match.params.index].recipe.label}
                     </h4>
-                    {saved_recipes[props.match.params.index].type ===
+                    {saved_recipes[props.match.params.index].recipe.type ===
                     "search" ? (
                       <CollectionButton
-                        recipe={saved_recipes[props.match.params.index].recipe}
+                        recipe={
+                          saved_recipes[props.match.params.index].recipe.recipe
+                        }
                       />
-                    ) : (
+                    ) : !saved_recipes[props.match.params.index].recipe
+                        .isRated ? (
                       <Button
                         variant='outlined'
                         color='primary'
                         id='focus-Transparent'
-                        onClick={handleClickOpen}
+                        onClick={handleClickRatingsModalOpen}
                       >
                         Rate Recipe
                       </Button>
+                    ) : (
+                      ""
                     )}
                   </div>
                   <div className='nutrition-chips'>
@@ -202,7 +219,7 @@ export default function SavedRecipesIndex(props) {
                   variant='outlined'
                   color='primary'
                   id='focus-Transparent'
-                  onClick={handleClickOpen}
+                  onClick={handleClickNutritionModalOpen}
                 >
                   View Nutrition
                 </Button>

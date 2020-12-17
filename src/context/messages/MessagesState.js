@@ -101,11 +101,20 @@ export const MessagesState = (props) => {
   const [state, dispatch] = useReducer(MessagesReducer, initialState);
 
   const addRecipeRecommendation = (obj) => {
-    console.log(obj);
-    dispatch({
-      type: ADD_RECCOMENDED_RECIPE,
-      item: obj,
-    });
+    // console.log(obj);
+    // dispatch({
+    //   type: ADD_RECCOMENDED_RECIPE,
+    //   item: obj,
+    // });
+
+    pubnub.deleteMessages(
+      {
+        channels: RECCOMENDATIONS_CHANNEL,
+      },
+      function (status, response) {
+        console.log(status, response);
+      }
+    );
   };
 
   const getReccomendedRecipes = () => {

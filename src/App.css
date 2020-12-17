@@ -148,15 +148,34 @@ margin-top: 1.5rem;
   
 }
 
+#messages-all {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top:3rem
+}
+
+.reviews-container {
+  margin-top: 2rem;
+}
+
+.review-outer {
+  margin-bottom: 3rem;
+}
+
 #recommend-item{
 margin-bottom: 30px;
 }
 
+#message-item {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
 #recommended-recipes{
- display:flex;
- flex-direction: row;
- flex-wrap: wrap;
-justify-content: space-evenly;
+display: grid;
+grid-template-columns: auto auto auto;
   
 }
 

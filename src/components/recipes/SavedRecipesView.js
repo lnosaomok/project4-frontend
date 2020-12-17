@@ -47,14 +47,23 @@ const useStyles = makeStyles((theme) => ({
 const SavedRecipesView = (props) => {
   const { data } = props.location;
   console.log(data);
-  const [open, setOpen] = React.useState(false);
+  const [openNutritionModal, setOpenNutritionModal] = React.useState(false);
+  const [openRatingsModal, setOpenRatingsModal] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickNutritionModalOpen = () => {
+    setOpenNutritionModal(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseNutritionModal = () => {
+    setOpenNutritionModal(false);
+  };
+
+  const handleClickRatingsModalOpen = () => {
+    setOpenRatingsModal(true);
+  };
+
+  const handleCloseRatingsModal = () => {
+    setOpenRatingsModal(false);
   };
 
   const recipesContext = useContext(RecipesContext);
@@ -103,15 +112,16 @@ const SavedRecipesView = (props) => {
     saved_recipes.length > 0 ? (
       <>
         <RatingModal
-          open={open}
-          handleClose={handleClose}
+          open={openRatingsModal}
+          handleClose={handleCloseRatingsModal}
           timetoken={data.timetoken}
+          id={data._id}
         />
 
         <NutritionModal
           allNutrients={data.recipe.allNutrients}
-          open={open}
-          handleClose={handleClose}
+          open={openNutritionModal}
+          handleClose={handleCloseNutritionModal}
           healthLabels={data.recipe.diet_labels}
         />
         <div className={classes.root}>
@@ -168,15 +178,17 @@ const SavedRecipesView = (props) => {
                     <h4>{data.recipe.label}</h4>
                     {data.type === "search" ? (
                       <CollectionButton recipe={data.recipe} />
-                    ) : (
+                    ) : !data.isRated ? (
                       <Button
                         variant='outlined'
                         color='primary'
                         id='focus-Transparent'
-                        onClick={handleClickOpen}
+                        onClick={handleClickRatingsModalOpen}
                       >
                         Rate Recipe
                       </Button>
+                    ) : (
+                      ""
                     )}
                   </div>
                   <div className='nutrition-chips'>
@@ -195,7 +207,7 @@ const SavedRecipesView = (props) => {
                   variant='outlined'
                   color='primary'
                   id='focus-Transparent'
-                  onClick={handleClickOpen}
+                  onClick={handleClickNutritionModalOpen}
                 >
                   View Nutrition
                 </Button>

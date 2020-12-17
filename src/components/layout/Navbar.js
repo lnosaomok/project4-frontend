@@ -42,7 +42,9 @@ const Navbar = () => {
       <li>
         <Link to='/searchrecipes'> Search Recipes</Link>
       </li>
-
+      <li>
+        <Link to='/allmessages'> All Messages</Link>
+      </li>
       <li>Hello {user && user.username}</li>
       <li>
         <a onClick={onLogout}>
