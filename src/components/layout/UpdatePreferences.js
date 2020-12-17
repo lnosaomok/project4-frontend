@@ -41,9 +41,6 @@ const UpdatePreferences = (props) => {
   useEffect(async () => {
     await getUserPreferences();
   }, []);
-  useEffect(async () => {
-    await getUserPreferences();
-  }, []);
 
   const classes = useStyles();
   const [macroValues, setMacroValues] = React.useState({
@@ -175,7 +172,7 @@ const UpdatePreferences = (props) => {
             <label>
               <input
                 type='checkbox'
-                value={"VEGAN_RECIPES_CHANNEL"}
+                value={"Vegan"}
                 onChange={(e) => {
                   onChannelChange(e);
                 }}
@@ -187,7 +184,7 @@ const UpdatePreferences = (props) => {
             <label>
               <input
                 type='checkbox'
-                value={"KETO_RECIPES_CHANNEL"}
+                value={"Keto"}
                 onChange={(e) => {
                   onChannelChange(e);
                 }}
@@ -199,7 +196,7 @@ const UpdatePreferences = (props) => {
             <label>
               <input
                 type='checkbox'
-                value={"GLUTEN_FREE_RECIPES_CHANNEL"}
+                value={"Gluten Free"}
                 onChange={(e) => {
                   onChannelChange(e);
                 }}
@@ -211,7 +208,7 @@ const UpdatePreferences = (props) => {
             <label>
               <input
                 type='checkbox'
-                value={"PALEO_RECIPES_CHANNEL"}
+                value={"Paleo"}
                 onChange={(e) => {
                   onChannelChange(e);
                 }}

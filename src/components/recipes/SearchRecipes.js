@@ -39,7 +39,6 @@ const SearchRecipes = () => {
   }, []);
 
   console.log(saved_recipes);
-
   useEffect(() => {
     document.addEventListener("DOMContentLoaded", function () {
       var elems = document.querySelectorAll(".modal");

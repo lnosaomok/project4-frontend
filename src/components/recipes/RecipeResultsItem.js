@@ -12,6 +12,7 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
+import CollectionButton from "./CollectionButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -81,12 +82,13 @@ export default function RecipeResultsItem({ recipe, key }) {
   };
 
   const saveRecipeItem = async () => {
+    let type = "search";
     if (!isAuthenticated) {
       M.toast({ html: "You must be logged in to save" });
     } else {
       setRecipeSaved(true);
       M.toast({ html: "Saved" });
-      await saveRecipe({ recipe });
+      await saveRecipe({ recipe, type });
     }
   };
 
@@ -109,7 +111,7 @@ export default function RecipeResultsItem({ recipe, key }) {
                   setHealthLabels(recipe.diet_labels);
                 }}
               >
-                Nutrition
+                <i class='material-icons'>more_vert</i>
               </a>
             </IconButton>
           }
@@ -140,9 +142,7 @@ export default function RecipeResultsItem({ recipe, key }) {
               {recipeSaved ? "check_circle" : "add_circle"}
             </i>
           </IconButton>
-          <IconButton aria-label='share' id='focus-transparent'>
-            <ShareIcon />
-          </IconButton>
+
           <IconButton
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,

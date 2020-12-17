@@ -23,7 +23,6 @@ export default function NutritionTable({ allNutrients }) {
   let rows = [];
 
   if (allNutrients) {
-    console.log(allNutrients);
     let allNutrientsFiltered = allNutrients.filter((nutrient) => {
       return (
         nutrient !== null && nutrient !== "undefined" && nutrient !== undefined
@@ -48,7 +47,7 @@ export default function NutritionTable({ allNutrients }) {
   return (
     <>
       <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label='simple table'>
+        <Table className={classes.table} size='small' aria-label='simple table'>
           <TableHead id='t-head'>
             <TableRow>
               <TableCell>Nutrients</TableCell>

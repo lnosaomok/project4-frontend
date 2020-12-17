@@ -33,7 +33,7 @@ const Navbar = () => {
       </li>
 
       <li>
-        <Link to='/update'> Update Preferences</Link>
+        <Link to='/recommended'> Recommended</Link>
       </li>
 
       <li>

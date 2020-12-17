@@ -2,23 +2,21 @@ import React, { useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import RecipesContext from "../../context/recipes/RecipesContext";
-import Spinner from "../../components/layout/Spinner";
+import Spinner from "../layout/Spinner";
 import NutritionTable from "./NutritionTable";
 import Chip from "@material-ui/core/Chip";
-import M from "materialize-css/dist/js/materialize.min";
+import CollectionButton from "./CollectionButton";
+import RatingModal from "./RatingModal";
+import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +43,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SavedRecipes(props) {
+export default function SavedRecipesIndex(props) {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const recipesContext = useContext(RecipesContext);
   const {
     recipe_result,
@@ -65,59 +73,107 @@ export default function SavedRecipes(props) {
     await getSavedRecipes();
   }, []);
 
+  useEffect(() => {
+    if (document.querySelector(".MuiListItemText-primary")) {
+      document
+        .querySelectorAll(".MuiListItemText-primary")
+        .forEach((element, index) => {
+          element.id = index;
+        });
+    }
+  }, []);
   const classes = useStyles();
 
-  const onClick = (e) => {
-    console.log(e.target.id);
-    e.stopPropagation();
-    //this.props.history.push(`/searchrecipes${e}`);
-  };
+  const searchedRecipes = saved_recipes
+    ? saved_recipes.filter((recipe) => {
+        return recipe.type === "search";
+      })
+    : null;
+
+  const recommendedRecipes = saved_recipes
+    ? saved_recipes.filter((recipe) => {
+        return recipe.type === "recommended";
+      })
+    : null;
 
   return saved_recipes !== null && !loading ? (
     saved_recipes.length > 0 ? (
       <>
+        <RatingModal
+          open={open}
+          handleClose={handleClose}
+          timetoken={saved_recipes[props.match.params.index].timetoken}
+        />
         <div className={classes.root}>
           <CssBaseline />
-
-          <Drawer
-            className={classes.drawer}
-            variant='permanent'
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            anchor='left'
-          >
-            <div className={classes.toolbar} />
-            <Typography>
-              {" "}
-              <h5>My Saved Recipes</h5>
-            </Typography>
-            <List>
-              {saved_recipes.map((recipe, index) => (
+          <ul id='slide-out' class='sidenav-fixed'>
+            <li>Searched Recipes</li>
+            {searchedRecipes.map((recipe, index) => {
+              return (
                 <>
-                  <Divider />
-                  <ListItem
-                    button
-                    key={recipe.recipe.label}
-                    id={index}
-                    onClick={(e) => {
-                      onClick(e);
-                    }}
-                  >
-                    <ListItemText primary={recipe.recipe.label} id={index} />
+                  {" "}
+                  <Divider id={index} />
+                  <ListItem button key={recipe.recipe.label} id={index}>
+                    <Link
+                      to={{
+                        pathname: "/showrecipe",
+                        data: recipe,
+                      }}
+                    >
+                      {" "}
+                      <ListItemText primary={recipe.recipe.label} id={index} />
+                    </Link>
                   </ListItem>
                 </>
-              ))}
-            </List>
-          </Drawer>
+              );
+            })}
+
+            <li>Recommended Recipes</li>
+            {recommendedRecipes.map((recipe, index) => {
+              return (
+                <>
+                  {" "}
+                  <Divider id={index} />
+                  <ListItem button key={recipe.recipe.label} id={index}>
+                    <Link
+                      to={{
+                        pathname: "/showrecipe",
+                        data: recipe,
+                      }}
+                    >
+                      {" "}
+                      <ListItemText primary={recipe.recipe.label} id={index} />
+                    </Link>
+                  </ListItem>
+                </>
+              );
+            })}
+          </ul>
           <main className={classes.content}>
             <div className={classes.toolbar} />
             <div class='favourites'>
               <div class='col s12 m12'>
                 <div class='title-label'>
-                  <h4>
-                    {saved_recipes[props.match.params.index].recipe.label}
-                  </h4>
+                  <div className='title-bar'>
+                    <h4>
+                      {saved_recipes[props.match.params.index].recipe.label}
+                    </h4>
+                    {saved_recipes[props.match.params.index].type ===
+                    "search" ? (
+                      <CollectionButton
+                        recipe={saved_recipes[props.match.params.index].recipe}
+                      />
+                    ) : (
+                      <Button
+                        variant='outlined'
+                        color='primary'
+                        id='focus-Transparent'
+                        onClick={handleClickOpen}
+                      >
+                        Rate Recipe
+                      </Button>
+                    )}
+                  </div>
                   <div className='nutrition-chips'>
                     {" "}
                     {saved_recipes[
@@ -161,21 +217,21 @@ export default function SavedRecipes(props) {
                 </div>
               </div>
             </div>
-          </main>
-        </div>
 
-        <div id='nutrition'>
-          <div id='table'>
-            {" "}
-            <NutritionTable
-              allNutrients={
-                saved_recipes[props.match.params.index].recipe.allNutrients
-              }
-              healthLabels={
-                saved_recipes[props.match.params.index].recipe.diet_labels
-              }
-            />
-          </div>
+            <div id=''>
+              <div id='table'>
+                {" "}
+                <NutritionTable
+                  allNutrients={
+                    saved_recipes[props.match.params.index].recipe.allNutrients
+                  }
+                  healthLabels={
+                    saved_recipes[props.match.params.index].recipe.diet_labels
+                  }
+                />
+              </div>
+            </div>
+          </main>
         </div>
       </>
     ) : (

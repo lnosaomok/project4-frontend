@@ -71,7 +71,7 @@ const Register = (props) => {
                 data-error='wrong'
                 data-success='right'
               >
-                Username must be minimun 6 characters
+                Username must be minimum 6 characters
               </span>
             </div>
             <div className='input-field col s12'>
@@ -93,6 +93,7 @@ const Register = (props) => {
                 Password must be minimun 6 characters
               </span>
             </div>
+
             <div className='input-field col s12'>
               <input
                 id='text'
