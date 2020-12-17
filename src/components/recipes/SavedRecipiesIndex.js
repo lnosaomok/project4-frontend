@@ -15,7 +15,7 @@ import CollectionButton from "./CollectionButton";
 import RatingModal from "./RatingModal";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-
+import NutritionModal from "./NutritionModal";
 const drawerWidth = 300;
 
 const useStyles = makeStyles((theme) => ({
@@ -104,9 +104,19 @@ export default function SavedRecipesIndex(props) {
           handleClose={handleClose}
           timetoken={saved_recipes[props.match.params.index].timetoken}
         />
+        <NutritionModal
+          allNutrients={
+            saved_recipes[props.match.params.index].recipe.allNutrients
+          }
+          open={open}
+          handleClose={handleClose}
+          healthLabels={
+            saved_recipes[props.match.params.index].recipe.diet_labels
+          }
+        />
         <div className={classes.root}>
           <CssBaseline />
-          <ul id='slide-out' class='sidenav-fixed'>
+          <ul id='slide-out' class='sidenav-fixed z-depth-5'>
             <li>Searched Recipes</li>
             {searchedRecipes.map((recipe, index) => {
               return (
@@ -128,7 +138,7 @@ export default function SavedRecipesIndex(props) {
               );
             })}
 
-            <li>Recommended Recipes</li>
+            <li className='collection-header'>Recommended Recipes</li>
             {recommendedRecipes.map((recipe, index) => {
               return (
                 <>
@@ -188,12 +198,14 @@ export default function SavedRecipesIndex(props) {
                     src={saved_recipes[props.match.params.index].recipe.image}
                   />
                 </div>
-                <a
-                  class='waves-effect waves-light modal-trigger'
-                  href='#modal2'
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  id='focus-Transparent'
+                  onClick={handleClickOpen}
                 >
-                  Nutrition Information
-                </a>
+                  View Nutrition
+                </Button>
                 <div class=''>
                   <ul class='collection with-header'>
                     <li class='collection-header'>
@@ -215,20 +227,6 @@ export default function SavedRecipesIndex(props) {
                     {saved_recipes[props.match.params.index].recipe.url}
                   </a>
                 </div>
-              </div>
-            </div>
-
-            <div id=''>
-              <div id='table'>
-                {" "}
-                <NutritionTable
-                  allNutrients={
-                    saved_recipes[props.match.params.index].recipe.allNutrients
-                  }
-                  healthLabels={
-                    saved_recipes[props.match.params.index].recipe.diet_labels
-                  }
-                />
               </div>
             </div>
           </main>

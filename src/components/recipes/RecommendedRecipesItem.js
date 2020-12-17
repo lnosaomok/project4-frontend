@@ -43,7 +43,9 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
     recipeRatings,
     loading,
   } = messagesContext;
+
   const classes = useStyles();
+
   const ratingsArr = ["0", "1", "2", "3", "4", "5"];
   let recipeRatingsStars =
     recipeRatings && recipeRatings.length > 0
@@ -56,14 +58,34 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
       return rating;
     }
   });
-
+  let starCounts = recipeRatingsStars.length;
   recipeRatingsStars = recipeRatingsStars
     .map((rating) => {
       return parseInt(rating.value);
     })
     .reduce((a, b) => a + b, 0);
-  recipeRatingsStars = recipeRatingsStars / recipeRatings.length;
-  console.log(recipeRatingsStars);
+  recipeRatingsStars = recipeRatingsStars / starCounts;
+
+  let recipeRatingsMessages =
+    recipeRatings && recipeRatings.length > 0
+      ? recipeRatings.filter((item) => {
+          return item.messageTimetoken === timetoken;
+        })
+      : [];
+
+  recipeRatingsMessages = recipeRatingsMessages.filter((rating) => {
+    if (!ratingsArr.includes(rating.value)) {
+      return rating;
+    }
+  });
+
+  let messageCounts = recipeRatingsMessages.length;
+  recipeRatingsMessages = recipeRatingsMessages.map((rating) => {
+    return rating.value;
+  });
+
+  console.log(messageCounts);
+  console.log(recipeRatingsMessages);
   return (
     <Card className={classes.root}>
       <CardActionArea>
@@ -73,33 +95,66 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
           title={recipe.recipe.label}
         />
         <CardContent>
-          <Typography gutterBottom variant='h5' component='h2'>
+          <Typography gutterBottom variant='h6' component='h3'>
             {recipe.recipe.label}
           </Typography>
-          <StyledRating
-            name='customized-color'
-            value={recipeRatingsStars}
-            defaultValue={0}
-            readOnly
-            getLabelText={(value) => `${value} Heart${value !== 1 ? "s" : ""}`}
-            precision={0.1}
-            icon={<FavoriteIcon fontSize='inherit' />}
-          />
+          <Typography gutterBottom variant='p' component='p'>
+            Shared by {recipe.name}
+          </Typography>
+          <div className='rating-text'>
+            <StyledRating
+              name='customized-color'
+              value={recipeRatingsStars}
+              defaultValue={0}
+              readOnly
+              getLabelText={(value) =>
+                `${value} Heart${value !== 1 ? "s" : ""}`
+              }
+              precision={0.1}
+              icon={<FavoriteIcon fontSize='inherit' />}
+            />
+
+            <Typography>
+              {starCounts === 0
+                ? ""
+                : starCounts === 1
+                ? `${starCounts} Rating`
+                : `${starCounts} Ratings`}
+            </Typography>
+          </div>
+
+          <div class='review'>
+            {" "}
+            <Typography>
+              {messageCounts === 0
+                ? ""
+                : messageCounts === 1
+                ? `${messageCounts} Review`
+                : `${messageCounts} Reviews`}
+            </Typography>
+          </div>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size='small' color='primary'>
+        {/* <Button size='small' color='primary'>
           Share
-        </Button>
+        </Button> */}
         <Button size='small' color='primary'>
           <Link
             to={{
               pathname: "/view",
-              data: { recipe, timetoken },
+              data: {
+                recipe,
+                timetoken,
+                messageCounts,
+                recipeRatingsMessages,
+                recipeRatingsStars,
+                starCounts,
+              },
             }}
           >
             {" "}
-            view
+            View Recipe
           </Link>
         </Button>
       </CardActions>

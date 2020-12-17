@@ -1,25 +1,29 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import Chip from "@material-ui/core/Chip";
-
-const useStyles = makeStyles({
-  table: {
-    minWidth: 70,
-  },
-});
 
 export default function NutritionTable({ allNutrients }) {
-  const classes = useStyles();
-  function createData(name, Daily, percent) {
-    return { name, Daily, percent };
+  const columns = [
+    { id: "name", label: "Name", minWidth: 170 },
+    {
+      id: "daily",
+      label: "Daily",
+      minWidth: 170,
+      align: "right",
+    },
+  ];
+
+  function createData(name, daily) {
+    return { name, daily };
   }
+
   let rows = [];
 
   if (allNutrients) {
@@ -36,36 +40,66 @@ export default function NutritionTable({ allNutrients }) {
     });
   }
 
-  //   const rows = [
-  //     createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  //     createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  //     createData('Eclair', 262, 16.0, 24, 6.0),
-  //     createData('Cupcake', 305, 3.7, 67, 4.3),
-  //     createData('Gingerbread', 356, 16.0, 49, 3.9),
-  //   ];
+  const useStyles = makeStyles({
+    root: {
+      width: "100%",
+    },
+    container: {
+      maxHeight: 440,
+    },
+  });
+  const classes = useStyles();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   return (
-    <>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} size='small' aria-label='simple table'>
-          <TableHead id='t-head'>
+    <Paper className={classes.root}>
+      <TableContainer className={classes.container}>
+        <Table stickyHeader aria-label='sticky table'>
+          <TableHead>
             <TableRow>
-              <TableCell>Nutrients</TableCell>
-              <TableCell align='right'>%Daily</TableCell>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell component='th' scope='row'>
-                  {row.name}
-                </TableCell>
-                <TableCell align='right'>{row.Daily}</TableCell>
-              </TableRow>
-            ))}
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                return (
+                  <TableRow hover tabIndex={-1} key={row.code}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format && typeof value === "number"
+                            ? column.format(value)
+                            : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </Paper>
   );
 }

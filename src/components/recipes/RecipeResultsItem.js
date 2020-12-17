@@ -15,6 +15,7 @@ import { red } from "@material-ui/core/colors";
 import CollectionButton from "./CollectionButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
+import Button from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import List from "@material-ui/core/List";
@@ -26,7 +27,7 @@ import RecipesContext from "../../context/recipes/RecipesContext";
 import AuthContext from "../../context/auth/AuthContext";
 import AlertContext from "../../context/alert/AlertContext";
 import UserPreferencesContext from "../../context/userPreferences/UserPreferencesContext";
-
+import NutritionModal from "./NutritionModal";
 import { useState } from "react";
 import { useEffect } from "react";
 import bb, { gauge } from "billboard.js";
@@ -58,6 +59,17 @@ export default function RecipeResultsItem({ recipe, key }) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const [recipeSaved, setRecipeSaved] = useState(false);
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const userPreferencesContext = useContext(UserPreferencesContext);
   const { userPreferences } = userPreferencesContext;
   const recipesContext = useContext(RecipesContext);
@@ -94,6 +106,12 @@ export default function RecipeResultsItem({ recipe, key }) {
 
   return (
     <>
+      <NutritionModal
+        allNutrients={recipe.allNutrients}
+        open={open}
+        handleClose={handleClose}
+        healthLabels={recipe.diet_labels}
+      />
       <Card className={classes.root}>
         <CardHeader
           avatar={
@@ -102,18 +120,14 @@ export default function RecipeResultsItem({ recipe, key }) {
             </Avatar>
           }
           action={
-            <IconButton aria-label='settings'>
-              <a
-                class='small waves-effect waves-light modal-trigger btn-flat'
-                href='#modal1'
-                onClick={() => {
-                  setNutritionObject(recipe.allNutrients);
-                  setHealthLabels(recipe.diet_labels);
-                }}
-              >
-                <i class='material-icons'>more_vert</i>
-              </a>
-            </IconButton>
+            <Button
+              variant='outlined'
+              color='primary'
+              id='focus-Transparent'
+              onClick={handleClickOpen}
+            >
+              View Nutrition
+            </Button>
           }
           title={recipe.label}
         />

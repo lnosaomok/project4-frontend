@@ -60,9 +60,31 @@ body{
     background-color: rgb(77, 162, 201);
 
 }
+
+.rating-text {
+  display: flex;
+  flex-direction: row;
+margin-top: 1.5rem;
+  justify-content: flex-start;
+}
 #focus-transparent:focus {
   outline: none;
   background-color: transparent;
+}
+
+.review {
+  margin-top: 2rem;
+  text-decoration-color: rgb(13, 36, 44);
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  display: flex;
+  
+  
+}
+
+.sidenav-fixed {
+  background-color: rgb(248, 245, 245);
+  width:27%
 }
 
 #table {

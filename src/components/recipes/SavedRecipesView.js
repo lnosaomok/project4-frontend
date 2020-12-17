@@ -15,6 +15,7 @@ import CollectionButton from "./CollectionButton";
 import RatingModal from "./RatingModal";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import NutritionModal from "./NutritionModal";
 
 const drawerWidth = 300;
 
@@ -106,10 +107,17 @@ const SavedRecipesView = (props) => {
           handleClose={handleClose}
           timetoken={data.timetoken}
         />
+
+        <NutritionModal
+          allNutrients={data.recipe.allNutrients}
+          open={open}
+          handleClose={handleClose}
+          healthLabels={data.recipe.diet_labels}
+        />
         <div className={classes.root}>
           <CssBaseline />
-          <ul id='slide-out' class='sidenav-fixed'>
-            <li>Searched Recipes</li>
+          <ul id='slide-out' class='sidenav-fixed z-depth-5'>
+            <li className='collection-header'>Searched Recipes</li>
             {searchedRecipes.map((recipe, index) => {
               return (
                 <>
@@ -183,12 +191,14 @@ const SavedRecipesView = (props) => {
                     src={data.recipe.image}
                   />
                 </div>
-                <a
-                  class='waves-effect waves-light modal-trigger'
-                  href='#modal2'
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  id='focus-Transparent'
+                  onClick={handleClickOpen}
                 >
-                  Nutrition Information
-                </a>
+                  View Nutrition
+                </Button>
                 <div class=''>
                   <ul class='collection with-header'>
                     <li class='collection-header'>
@@ -208,16 +218,6 @@ const SavedRecipesView = (props) => {
                     {data.recipe.url}
                   </a>
                 </div>
-              </div>
-            </div>
-
-            <div id=''>
-              <div id='table'>
-                {" "}
-                <NutritionTable
-                  allNutrients={data.recipe.allNutrients}
-                  healthLabels={data.recipe.diet_labels}
-                />
               </div>
             </div>
           </main>
