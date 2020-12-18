@@ -2,7 +2,7 @@ import React, { useEffect, Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
 import M from "materialize-css/dist/js/materialize.min";
 import AuthContext from "../../context/auth/AuthContext";
-const Navbar = () => {
+const Navbar = (props) => {
   useEffect(() => {
     document.addEventListener("DOMContentLoaded", function () {
       var elems = document.querySelectorAll(".sidenav");
@@ -19,6 +19,7 @@ const Navbar = () => {
 
   const onLogout = async () => {
     await logout();
+
     window.location.reload();
   };
 
@@ -30,18 +31,21 @@ const Navbar = () => {
       <li>|</li>
 
       <li>
-        <Link to='/recommended'> Recommended</Link>
+        <Link to='/recommended'> Recommended Recipes</Link>
       </li>
-
+      <li>|</li>
       <li>
         <Link to='/savedrecipes/0'> Saved Recipes</Link>
       </li>
+      <li>|</li>
       <li>
-        <Link to='/searchrecipes'> Search Recipes</Link>
+        <Link to='/create'> Create Recipe</Link>
       </li>
+      <li>|</li>
       <li>
         <Link to='/allmessages'> All Messages</Link>
       </li>
+      <li>|</li>
       <li>Hello {user && user.username}</li>
       <li>
         <a onClick={onLogout}>
@@ -55,11 +59,6 @@ const Navbar = () => {
   const guestLinks = (
     <Fragment>
       <li>
-        <Link to='/'>Home</Link>
-      </li>
-      <li>|</li>
-
-      <li>
         <Link to='/register'> Register </Link>
       </li>
       <li>
@@ -72,7 +71,7 @@ const Navbar = () => {
       <nav>
         <div className='nav-wrapper'>
           <a href='#' className='brand-logo special-font'>
-            Chef's Hub
+            Chefs' Place
           </a>
           <ul id='nav-mobile' className='right '>
             {isAuthenticated ? authLinks : guestLinks}
