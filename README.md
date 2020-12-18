@@ -54,13 +54,6 @@ Users can also add image reviews to the recipes they tried
 7. As a user, I want to be able to filter my recommeded recipes to see the recipe I am looking for.
 8. As a user, I want to be able to save my recipes and return to see them later by logging in again to the application
 
-- Post MVP
-
-6. As a user I want to be able to register and login so that I can save my search results to collections.
-7. As a user I want the fonts and colors I see to be consistent so that I am not distracted.
-8. As a user I want the menus I want the design of my search applicaiton be stylish so that I am able to enjoy navigating the application and engaging with the content returned by search.
-9. As a user I want to be shown a message indicating that I have not selected a search type if I run a search before selecting what type of content I want returned so that I am aware why no results appear and am able to quickly resolve the issue by selecting a return type.
-
 ## Installation/Setup
 
 1. Clone this repository
