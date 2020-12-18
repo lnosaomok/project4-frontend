@@ -3,6 +3,10 @@ import {
   ADD_RECIPE_RATING,
   GET_RECCOMENDED_RECIPES,
   GET_RECIPE_RATINGS,
+  NEW_IMAGE_FILE,
+  GET_IMAGE_FILES,
+  FILTER_RECOMMENDED_RECIPES,
+  CLEAR_FILTERED_RECOMMENDED_RECIPES,
 } from "../types";
 
 export default (state, action) => {
@@ -17,6 +21,33 @@ export default (state, action) => {
       return {
         ...state,
         recipeRatings: [...state.recipeRatings, action.item],
+      };
+    case GET_IMAGE_FILES:
+      return {
+        ...state,
+        imageFilesList: action.item,
+      };
+
+    case FILTER_RECOMMENDED_RECIPES:
+      return {
+        ...state,
+        filtered_recommended_recipes: state.reccommended_recipes.filter(
+          (recipe) => {
+            const regex = new RegExp(`${action.payload}`, "gi");
+            return recipe.message.recipe.label.match(regex);
+          }
+        ),
+      };
+    case CLEAR_FILTERED_RECOMMENDED_RECIPES:
+      return {
+        ...state,
+        filtered_recommended_recipes: null,
+      };
+
+    case NEW_IMAGE_FILE:
+      return {
+        ...state,
+        imageFilesList: [...state.imageFilesList, action.item],
       };
 
     case GET_RECCOMENDED_RECIPES:

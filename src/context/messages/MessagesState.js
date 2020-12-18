@@ -9,11 +9,15 @@ import {
   GET_RECCOMENDED_RECIPES,
   ADD_RECIPE_RATING,
   GET_RECIPE_RATINGS,
+  GET_IMAGE_FILES,
+  NEW_IMAGE_FILE,
+  FILTER_RECOMMENDED_RECIPES,
+  CLEAR_FILTERED_RECOMMENDED_RECIPES,
 } from "../types";
 
 /// SET UP CHANNELS
 const RECCOMENDATIONS_CHANNEL = "RECCOMENDATIONS_CHANNEL";
-const Q_AND_A_CHANNEL = "Q_AND_A_CHANNEL";
+const FILE_CHANNEL = "FILE_CHANNEL";
 const ALL_USERS = "user.*";
 
 //SET UP PUB/SUB CONFIGURATION METHODS
@@ -22,7 +26,7 @@ const pubnub = new PubNub(pubnubConfig);
 
 function PubSub() {
   pubnub.subscribe({
-    channels: [RECCOMENDATIONS_CHANNEL, Q_AND_A_CHANNEL, ALL_USERS],
+    channels: [RECCOMENDATIONS_CHANNEL, FILE_CHANNEL, ALL_USERS],
   });
 
   this.addListener = (listenerConfig) => {
@@ -30,7 +34,6 @@ function PubSub() {
   };
 
   this.publish = (message, channel) => {
-    console.log(message);
     pubnub.publish(
       {
         message,
@@ -68,15 +71,21 @@ function PubSub() {
     );
   };
 
-  this.sendFile = async (file, message, channel) => {
+  this.sendFile = async (file, timetoken) => {
     const result = await pubnub.sendFile({
-      channel: channel,
-      message: message,
+      channel: FILE_CHANNEL,
       file: file,
+      message: {
+        test: "message",
+        value: timetoken,
+      },
     });
   };
 
   this.getFile = (channel, id, name) => {
+    console.log(name);
+    console.log(id);
+    console.log(channel);
     const result = pubnub.getFileUrl({
       channel: channel,
       id: id,
@@ -92,10 +101,12 @@ export const pubsub = new PubSub();
 export const MessagesState = (props) => {
   const initialState = {
     reccommended_recipes: [],
+    filtered_recommended_recipes: null,
     error: null,
     loading: true,
     pubsub: pubsub,
     recipeRatings: [],
+    imageFilesList: [],
   };
 
   const [state, dispatch] = useReducer(MessagesReducer, initialState);
@@ -124,7 +135,6 @@ export const MessagesState = (props) => {
         count: 75,
       })
       .then(async (res) => {
-        console.log(res);
         dispatch({
           type: GET_RECCOMENDED_RECIPES,
           item: res.channels.RECCOMENDATIONS_CHANNEL,
@@ -132,25 +142,57 @@ export const MessagesState = (props) => {
       });
   };
 
-  // const getActions = (channel) => {
-  //   pubnub
-  //     .getMessageActions({
-  //       channel: channel,
-  //       limit: 100,
-  //     })
-  //     .then(async (res) => {
-  //       console.log(res);
-  //       if (channel === "CHANNEL1") {
-  //         dispatch({
-  //           type: GET_CHANNEL1_ACTIONS,
-  //           item: res.data,
-  //         });
-  //       }
-  //     });
-  // };
+  const newImageFile = (obj) => {
+    let urlsArr = {};
+
+    let imgVal = pubnub.getFileUrl({
+      channel: "FILE_CHANNEL",
+      id: obj.file.id,
+      name: obj.file.name,
+    });
+    let messageVal = obj.message;
+
+    // urlsArr.push({ imgVal, messageVal, timetoken: obj.timetoken });
+
+    dispatch({
+      type: NEW_IMAGE_FILE,
+      item: {
+        channel: obj.channel,
+        imgVal,
+        messageVal,
+        timetoken: obj.timetoken,
+      },
+    });
+  };
+  const getImageFiles = async (channel) => {
+    const imagefiles = await pubnub.fetchMessages({
+      channels: [FILE_CHANNEL],
+
+      count: 175, // default/max is 25
+    });
+
+    let urlsArr = [];
+
+    await imagefiles.channels.FILE_CHANNEL.forEach((element) => {
+      console.log(element);
+      let imgVal = pubnub.getFileUrl({
+        channel: "FILE_CHANNEL",
+        id: element.message.file.id,
+        name: element.message.file.name,
+      });
+
+      let messageVal = element.message.message;
+
+      urlsArr.push({ imgVal, messageVal, timetoken: element.timetoken });
+    });
+
+    await dispatch({
+      type: GET_IMAGE_FILES,
+      item: urlsArr,
+    });
+  };
 
   const addRating = (obj) => {
-    console.log(obj);
     dispatch({
       type: ADD_RECIPE_RATING,
       item: obj,
@@ -158,18 +200,24 @@ export const MessagesState = (props) => {
   };
 
   const getRatings = () => {
-    //console.log(obj);
     pubnub
       .getMessageActions({
         channel: RECCOMENDATIONS_CHANNEL,
       })
       .then(async (res) => {
-        console.log(res);
         dispatch({
           type: GET_RECIPE_RATINGS,
           item: res.data,
         });
       });
+  };
+
+  const filterRecommendedRecipes = (text) => {
+    dispatch({ type: FILTER_RECOMMENDED_RECIPES, payload: text });
+  };
+
+  const clearFilteredRecommendedRecipes = () => {
+    dispatch({ type: CLEAR_FILTERED_RECOMMENDED_RECIPES });
   };
 
   return (
@@ -178,12 +226,19 @@ export const MessagesState = (props) => {
         pubsub: state.pubsub,
         recipeRatings: state.recipeRatings,
         reccommended_recipes: state.reccommended_recipes,
+        filtered_recommended_recipes: state.filtered_recommended_recipes,
+        filterRecommendedRecipes,
+        clearFilteredRecommendedRecipes,
+        filterRecommendedRecipes,
         error: state.error,
+        imageFilesList: state.imageFilesList,
         loading: state.loading,
         addRecipeRecommendation,
         getReccomendedRecipes,
         addRating,
         getRatings,
+        getImageFiles,
+        newImageFile,
       }}
     >
       {props.children}

@@ -15,6 +15,7 @@ import { withStyles } from "@material-ui/core/styles";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import Box from "@material-ui/core/Box";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import { useEffect } from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -40,11 +41,26 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
     getReccomendedRecipes,
     reccommended_recipes,
     getRatings,
+    getImageFiles,
+    imageFilesList,
     recipeRatings,
     loading,
   } = messagesContext;
-
+  useEffect(() => {
+    getImageFiles();
+  }, []);
   const classes = useStyles();
+
+  let imagesForRecipe =
+    imageFilesList && imageFilesList.length > 0
+      ? imageFilesList
+          .filter((item) => {
+            return item.messageVal;
+          })
+          .filter((item) => {
+            return item.messageVal.value === timetoken;
+          })
+      : [];
 
   const ratingsArr = ["0", "1", "2", "3", "4", "5"];
   let recipeRatingsStars =
@@ -156,6 +172,7 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
                 recipeRatingsStars,
                 starCounts,
                 allRatings: allRatingsForRecipe,
+                allImages: imagesForRecipe,
               },
             }}
           >

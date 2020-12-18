@@ -4,7 +4,12 @@ import MessagesContext from "../context/messages/MessagesContext";
 
 const useInitializeListeners = () => {
   const messagesContext = useContext(MessagesContext);
-  const { addRecipeRecommendation, pubsub, addRating } = messagesContext;
+  const {
+    addRecipeRecommendation,
+    pubsub,
+    addRating,
+    newImageFile,
+  } = messagesContext;
 
   useEffect(() => {
     pubsub.addListener({
@@ -34,7 +39,7 @@ const useInitializeListeners = () => {
         messageAndFile.channel = messageObject.channel;
         messageAndFile.timetoken = messageObject.timetoken;
 
-        //newImageFile(messageAndFile);
+        newImageFile(messageAndFile);
         console.log(messageAndFile);
       },
     });

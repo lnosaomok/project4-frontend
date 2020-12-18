@@ -21,6 +21,8 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import NutritionModal from "./NutritionModal";
 import Button from "@material-ui/core/Button";
 import ReviewsModal from "./ReviewsModal";
+import ImagesViewModal from "./ImagesViewModal";
+
 const StyledRating = withStyles({
   iconFilled: {
     color: "#ff6d75",
@@ -62,6 +64,15 @@ const ViewRecipe = (props) => {
   const { saveRecipe } = recipesContext;
   const [openNutritionModal, setOpenNutritionModal] = React.useState(false);
   const [openReviewsModal, setOpenReviewsModal] = React.useState(false);
+  const [openImagesModal, setOpenImagesModal] = React.useState(false);
+
+  const handleClickImagesModalOpen = () => {
+    setOpenImagesModal(true);
+  };
+
+  const handleCloseImagesModal = () => {
+    setOpenImagesModal(false);
+  };
 
   const handleClickNutritionModalOpen = () => {
     setOpenNutritionModal(true);
@@ -91,8 +102,9 @@ const ViewRecipe = (props) => {
     recipeRatingsStars,
     starCounts,
     allRatings,
+    allImages,
   } = data;
-  console.log(data.timetoken);
+  console.log(data.allImages);
 
   function groupByKey(array, key) {
     return array.reduce((hash, obj) => {
@@ -122,6 +134,12 @@ const ViewRecipe = (props) => {
         allReviews={filteredAllRatings}
         open={openReviewsModal}
         handleClose={handleCloseReviewsModal}
+      />
+
+      <ImagesViewModal
+        open={openImagesModal}
+        handleClose={handleCloseImagesModal}
+        allImages={data.allImages}
       />
       <div className='card container' id='container'>
         <div className={classes.root}>
@@ -186,10 +204,18 @@ const ViewRecipe = (props) => {
                     <Button
                       variant='outlined'
                       color='primary'
-                      id='focus-Transparent'
+                      id='focus-transparent'
                       onClick={handleClickReviewsModalOpen}
                     >
-                      View Nutrition
+                      View Reviews
+                    </Button>
+                    <Button
+                      variant='outlined'
+                      color='primary'
+                      id='focus-transparent'
+                      onClick={handleClickImagesModalOpen}
+                    >
+                      View Submitted Images
                     </Button>
                   </div>
 

@@ -16,6 +16,9 @@ import RatingModal from "./RatingModal";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import NutritionModal from "./NutritionModal";
+import { useFileUpload } from "use-file-upload";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import UploadModal from "./UploadModal";
 
 const drawerWidth = 300;
 
@@ -49,6 +52,15 @@ const SavedRecipesView = (props) => {
   console.log(data);
   const [openNutritionModal, setOpenNutritionModal] = React.useState(false);
   const [openRatingsModal, setOpenRatingsModal] = React.useState(false);
+  const [openUploadModal, setOpenUploadModal] = React.useState(false);
+
+  const handleClickUploadModalOpen = () => {
+    setOpenUploadModal(true);
+  };
+
+  const handleCloseUploadModal = () => {
+    setOpenUploadModal(false);
+  };
 
   const handleClickNutritionModalOpen = () => {
     setOpenNutritionModal(true);
@@ -124,6 +136,11 @@ const SavedRecipesView = (props) => {
           handleClose={handleCloseNutritionModal}
           healthLabels={data.recipe.diet_labels}
         />
+        <UploadModal
+          open={openUploadModal}
+          handleClose={handleCloseUploadModal}
+          timetoken={data.timetoken}
+        />
         <div className={classes.root}>
           <CssBaseline />
           <ul id='slide-out' class='sidenav-fixed z-depth-5'>
@@ -176,20 +193,31 @@ const SavedRecipesView = (props) => {
                 <div class='title-label'>
                   <div className='title-bar'>
                     <h4>{data.recipe.label}</h4>
-                    {data.type === "search" ? (
-                      <CollectionButton recipe={data.recipe} />
-                    ) : !data.isRated ? (
-                      <Button
-                        variant='outlined'
-                        color='primary'
-                        id='focus-Transparent'
-                        onClick={handleClickRatingsModalOpen}
-                      >
-                        Rate Recipe
-                      </Button>
-                    ) : (
-                      ""
-                    )}
+                    <div>
+                      {data.type === "search" ? (
+                        <CollectionButton recipe={data.recipe} />
+                      ) : !data.isRated ? (
+                        <div className='buttons-mix'>
+                          <Button
+                            variant='outlined'
+                            color='primary'
+                            id='focus-Transparent'
+                            onClick={handleClickRatingsModalOpen}
+                          >
+                            Rate Recipe
+                          </Button>
+                          <Button
+                            variant='outlined'
+                            color='primary'
+                            onClick={handleClickUploadModalOpen}
+                          >
+                            Upload Recipe Creation
+                          </Button>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </div>
                   <div className='nutrition-chips'>
                     {" "}

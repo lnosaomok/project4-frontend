@@ -77,9 +77,7 @@ const Navbar = () => {
       <nav>
         <div className='nav-wrapper'>
           <a href='#' className='brand-logo special-font'>
-            <i className='large material-icons'>restaurant_menu</i>
-            RecipeHub
-            <i className='large material-icons'>people</i>
+            Chef's Hub
           </a>
           <ul id='nav-mobile' className='right '>
             {isAuthenticated ? authLinks : guestLinks}

@@ -16,6 +16,7 @@ import RatingModal from "./RatingModal";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import NutritionModal from "./NutritionModal";
+import UploadModal from "./UploadModal";
 const drawerWidth = 300;
 
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +49,15 @@ export default function SavedRecipesIndex(props) {
 
   const [openNutritionModal, setOpenNutritionModal] = React.useState(false);
   const [openRatingsModal, setOpenRatingsModal] = React.useState(false);
+  const [openUploadModal, setOpenUploadModal] = React.useState(false);
+
+  const handleClickUploadModalOpen = () => {
+    setOpenUploadModal(true);
+  };
+
+  const handleCloseUploadModal = () => {
+    setOpenUploadModal(false);
+  };
 
   const handleClickNutritionModalOpen = () => {
     setOpenNutritionModal(true);
@@ -126,6 +136,11 @@ export default function SavedRecipesIndex(props) {
             saved_recipes[props.match.params.index].recipe.diet_labels
           }
         />
+        <UploadModal
+          open={openUploadModal}
+          handleClose={handleCloseUploadModal}
+          timetoken={saved_recipes[props.match.params.index].timetoken}
+        />
         <div className={classes.root}>
           <CssBaseline />
           <ul id='slide-out' class='sidenav-fixed z-depth-5'>
@@ -189,14 +204,23 @@ export default function SavedRecipesIndex(props) {
                       />
                     ) : !saved_recipes[props.match.params.index].recipe
                         .isRated ? (
-                      <Button
-                        variant='outlined'
-                        color='primary'
-                        id='focus-Transparent'
-                        onClick={handleClickRatingsModalOpen}
-                      >
-                        Rate Recipe
-                      </Button>
+                      <div className='buttons-mix'>
+                        <Button
+                          variant='outlined'
+                          color='primary'
+                          id='focus-Transparent'
+                          onClick={handleClickRatingsModalOpen}
+                        >
+                          Rate Recipe
+                        </Button>
+                        <Button
+                          variant='outlined'
+                          color='primary'
+                          onClick={handleClickUploadModalOpen}
+                        >
+                          Upload Recipe Creation
+                        </Button>
+                      </div>
                     ) : (
                       ""
                     )}
