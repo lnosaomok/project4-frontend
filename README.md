@@ -1,70 +1,117 @@
-# Getting Started with Create React App
+# Chef's Place...
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+Chef's Place is the app for chefs of all skill levels to show case their recipe creations and also engage with the cooking community. The app gives users the ability to add new recipes to their accound, recommend their recipes to others and also get nutrition information for the ingredients that they have
 
-In the project directory, you can run:
+![Application Screenshot](/project4/public/home.png)
 
-### `npm start`
+Users can also see the nutritional info for the recipes that they see recommeded
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![Application Screenshot](/project4/public/nutrition.png)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Users can also create posts that other users can see and add responses to.
 
-### `npm test`
+![Application Screenshot](/project4/public/posts.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Users can also add image reviews to the recipes they tried
 
-### `npm run build`
+![Application Screenshot](/project4/public/images.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Table of Contents
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Project
+  - GitHub Repo
+  - Production App
+- Wireframes
+  - link to Wireframes
+  - link to React Architecture?
+- User Stories
+- Features
+  - Components
+- Technologies
+  - Libraries
+- Installation/Setup?
+- Credits
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Project
 
-### `npm run eject`
+- [Front-End](https://github.com/lnosaomok/project4-frontend)
+- [Back-End](https://github.com/lnosaomok/project4-backend)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Wireframes
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## User Stories
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- MVP
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. As a user, I want to be able to get nutrition information for a a recipe made out of ingredients that I have.
+2. As a user, I want to be able see recipes that other users have reccommeded.
+3. As a user I want to be able to see the ratings and image reviews for all the recommeded recipes.
+4. As a user I want to be able to see the nutritional info of the recipes other users have shared.
+5. As a user I want to be able to add ratings and reviews to recipes recommeded by other users.
+6. As a user, I want to be able to see message posts/questions asked by other user along with the responses that the user gets.
+7. As a user, I want to be able to filter my recommeded recipes to see the recipe I am looking for.
+8. As a user, I want to be able to save my recipes and return to see them later by logging in again to the application
 
-## Learn More
+- Post MVP
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+6. As a user I want to be able to register and login so that I can save my search results to collections.
+7. As a user I want the fonts and colors I see to be consistent so that I am not distracted.
+8. As a user I want the menus I want the design of my search applicaiton be stylish so that I am able to enjoy navigating the application and engaging with the content returned by search.
+9. As a user I want to be shown a message indicating that I have not selected a search type if I run a search before selecting what type of content I want returned so that I am aware why no results appear and am able to quickly resolve the issue by selecting a return type.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Installation/Setup
 
-### Code Splitting
+1. Clone this repository
+2. Start mongoDB server locally
+3. Run npm install
+4. To run locally, use command npm run dev
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Technologies
 
-### Analyzing the Bundle Size
+### Frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The front end of the application is build mainly using react, coupled with compononts from Material UI and Materialize CSS.
 
-### Making a Progressive Web App
+- [React](https://reactjs.org/)
+- [Material Design](https://materializecss.com/about.html)
+- [Material UI](https://material-ui.com/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Backend
 
-### Advanced Configuration
+The back-end is based on a Mongo/Express/Node backend as well as the PubNub publisher/subscriber pattern where the app creates channels and listens for messages from the subscribed channel, immediately relaying back the information to the user.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The App also makes use of the EDAMAM API where majority of the recommended recipes were seeded from.
 
-### Deployment
+- [Edamam API](https://www.edamam.com/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Database
 
-### `npm run build` fails to minify
+- [MongoDB](https://docs.mongodb.com/manual/)
+- [Mongoose](https://www.npmjs.com/package/mongoose)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Server Side
+
+- [Express](https://expressjs.com/)
+
+### Version Control / Deployment
+
+- [Git](https://git-scm.com/doc)
+- [Heroku](https://devcenter.heroku.com/categories/reference)
+
+### Approach
+
+| Time   |                                        Task                                        |
+| ------ | :--------------------------------------------------------------------------------: |
+| 1 Day  | Produce proof of concept for the pub/sub pattern to make sure that it is feastible |
+| 1 Days |                       Initial UX design and front end setup                        |
+| 1 Days |                       Back end set up and complete UX design                       |
+| 1 Day  |              Testing, troubleshooting, refining styling of components              |
+| 1 Day  |                                  Final polishing                                   |
+| 1 Day  |                              Deployment/Documentation                              |
+
+## Challenges
+
+- Working with pages that require data to be passed to them (show routes) and there is still a bug where the data props are list when user refreshes on a show route.
+- Working with pubsub system for adding reactions to messages
