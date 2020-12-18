@@ -18,6 +18,7 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import MessagesContext from "../../context/messages/MessagesContext";
 import AuthContext from "../../context/auth/AuthContext";
 import RecipesContext from "../../context/recipes/RecipesContext";
+import { v4 as uuidv4 } from "uuid";
 
 import { useState } from "react";
 
@@ -58,6 +59,7 @@ export default function RatingModal({ open, handleClose, timetoken, id }) {
     if (ratingMessage === "" || value === "0") {
       M.toast({ html: "please fill in rating details" });
     } else {
+      let id = uuidv4();
       let channel = "RECCOMENDATIONS_CHANNEL";
       let date = new Date();
       let year = date.getFullYear().toString();
@@ -69,6 +71,8 @@ export default function RatingModal({ open, handleClose, timetoken, id }) {
       await addMessageAction(channel, timetoken, `$${ratingMessage}`);
       await addMessageAction(channel, timetoken, `%${date}`);
       await addMessageAction(channel, timetoken, `@${user.username}`);
+      await addMessageAction(channel, timetoken, `^${id}`);
+
       updateRating({ id });
       handleClose();
     }
@@ -81,7 +85,7 @@ export default function RatingModal({ open, handleClose, timetoken, id }) {
   const onChangeRating = (e) => {
     setValue(e.target.value);
   };
-  console.log(timetoken);
+
   return (
     <div>
       <Dialog open={open} aria-labelledby='form-dialog-title'>

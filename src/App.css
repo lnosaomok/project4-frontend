@@ -6,7 +6,7 @@
 }
 
 body{
-  background-color: rgb(248, 240, 246);
+  background-color: rgb(246, 244, 252);
 }
 
 #container {
@@ -78,10 +78,43 @@ margin-top: 1.5rem;
   text-decoration-line: underline;
   text-decoration-style: dashed;
   display: flex;
-  
-  
+ 
 }
 
+input[type="text"]:not(.browser-default){
+  background-color: transparent;
+    border-bottom: 1px solid #9e9e9e;
+    border-radius: 0;
+    outline: none;
+    height: 3rem;
+    width: 100%;
+    font-size: 16px;
+    margin: 0 0 8px 0;
+    padding: 0px 10px;
+    box-shadow: none;
+    box-sizing: content-box;
+    transition: box-shadow .3s, border .3s;
+
+}
+
+#step {
+  margin-top: 1rem;
+  width:50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.img-div {
+  margin-top: 2rem;
+}
+
+#generate {
+  width: 10%;
+}
+
+.makeStyles-root-147 {
+  width:50%
+}
 .sidenav-fixed {
   background-color: rgb(248, 245, 245);
   width:27%
