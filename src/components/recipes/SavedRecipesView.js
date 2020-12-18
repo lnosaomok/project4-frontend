@@ -144,7 +144,6 @@ const SavedRecipesView = (props) => {
         <div className={classes.root}>
           <CssBaseline />
           <ul id='slide-out' class='sidenav-fixed z-depth-5'>
-            <li className='collection-header'>Searched Recipes</li>
             {searchedRecipes.map((recipe, index) => {
               return (
                 <>
@@ -165,7 +164,6 @@ const SavedRecipesView = (props) => {
               );
             })}
 
-            <li>Recommended Recipes</li>
             {recommendedRecipes.map((recipe, index) => {
               return (
                 <>

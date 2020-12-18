@@ -144,7 +144,6 @@ export default function SavedRecipesIndex(props) {
         <div className={classes.root}>
           <CssBaseline />
           <ul id='slide-out' class='sidenav-fixed z-depth-5'>
-            <li>Searched Recipes</li>
             {searchedRecipes.map((recipe, index) => {
               return (
                 <>
@@ -165,7 +164,6 @@ export default function SavedRecipesIndex(props) {
               );
             })}
 
-            <li className='collection-header'>Recommended Recipes</li>
             {recommendedRecipes.map((recipe, index) => {
               return (
                 <>

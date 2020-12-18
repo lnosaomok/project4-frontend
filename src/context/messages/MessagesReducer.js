@@ -7,6 +7,10 @@ import {
   GET_IMAGE_FILES,
   FILTER_RECOMMENDED_RECIPES,
   CLEAR_FILTERED_RECOMMENDED_RECIPES,
+  GET_ALL_POSTS,
+  ADD_POST_REPLIES,
+  GET_POST_REPLIES,
+  ADD_POST,
 } from "../types";
 
 export default (state, action) => {
@@ -17,10 +21,35 @@ export default (state, action) => {
         reccommended_recipes: [...state.reccommended_recipes, action.item],
       };
 
+    case ADD_POST:
+      return {
+        ...state,
+        allPosts: [...state.allPosts, action.item],
+      };
+
+    case GET_ALL_POSTS:
+      return {
+        ...state,
+        allPosts: action.item,
+        loading: false,
+      };
     case ADD_RECIPE_RATING:
       return {
         ...state,
         recipeRatings: [...state.recipeRatings, action.item],
+      };
+
+    case ADD_POST_REPLIES:
+      return {
+        ...state,
+        postReplies: [...state.postReplies, action.item],
+      };
+
+    case GET_POST_REPLIES:
+      return {
+        ...state,
+        postReplies: action.item,
+        loading: false,
       };
     case GET_IMAGE_FILES:
       return {

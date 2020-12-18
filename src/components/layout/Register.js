@@ -57,11 +57,12 @@ const Register = (props) => {
           <div className='row'>
             <div className='input-field col s12'>
               <input
-                id='text'
+                id='round'
                 type='text'
                 placeholder='username'
                 name='username'
                 value={username}
+                autoComplete='off'
                 onChange={(e) => {
                   onChange(e);
                 }}
@@ -76,11 +77,12 @@ const Register = (props) => {
             </div>
             <div className='input-field col s12'>
               <input
-                id='text'
+                id='round'
                 type='text'
                 placeholder='password'
                 name='password'
                 value={password}
+                autoComplete='off'
                 onChange={(e) => {
                   onChange(e);
                 }}
@@ -96,10 +98,11 @@ const Register = (props) => {
 
             <div className='input-field col s12'>
               <input
-                id='text'
+                id='round'
                 type='text'
                 placeholder='confirm password'
                 value={password2}
+                autoComplete='off'
                 name='password2'
                 onChange={(e) => {
                   onChange(e);
@@ -118,6 +121,7 @@ const Register = (props) => {
               <button
                 className='button-btn waves-effect waves-light'
                 type='submit'
+                id='sign-in'
               >
                 Submit
               </button>

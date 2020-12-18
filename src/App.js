@@ -23,6 +23,7 @@ import ViewRecipe from "./components/recipes/ViewRecipe";
 import SavedRecipesView from "./components/recipes/SavedRecipesView";
 import AllMessages from "./components/messages/AllMessages";
 import CreateRecipe from "./components/recipes/CreateRecipe";
+import ViewPost from "./components/messages/ViewPost";
 function App() {
   if (localStorage.token) {
     setToken(localStorage.token);
@@ -45,6 +46,8 @@ function App() {
                         component={Collections}
                       />  */}
                     <Route exact path='/login' component={Login} />
+                    <Route exact path='/' component={RecommendedRecipes} />
+
                     <Route exact path='/register' component={Register} />
                     <Route exact path='/about' component={About} />
                     <Route exact path='/create' component={CreateRecipe} />
@@ -69,6 +72,11 @@ function App() {
                       exact
                       path='/view'
                       component={(props) => <ViewRecipe {...props} />}
+                    />
+                    <Route
+                      exact
+                      path='/post'
+                      component={(props) => <ViewPost {...props} />}
                     />
                     <Route
                       exact

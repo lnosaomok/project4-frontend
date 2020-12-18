@@ -9,6 +9,8 @@ const useInitializeListeners = () => {
     pubsub,
     addRating,
     newImageFile,
+    addPost,
+    addPostReply,
   } = messagesContext;
 
   useEffect(() => {
@@ -23,13 +25,26 @@ const useInitializeListeners = () => {
         console.log("Received message", messageObject, "channel", channel);
         if (channel === "RECCOMENDATIONS_CHANNEL") {
           addRecipeRecommendation(obj);
+        } else if (channel === "ALL_USERS") {
+          addPost(obj);
         }
       },
       messageAction: (messageObject) => {
-        console.log("ReceivedACTION", messageObject);
-        const { actionTimetoken, messageTimetoken, value } = messageObject.data;
+        //  console.log("ReceivedACTION", messageObject);
+        const {
+          actionTimetoken,
+          messageTimetoken,
+          value,
+          channel,
+        } = messageObject.data;
         const val = { actionTimetoken, messageTimetoken, value };
-        addRating(val);
+
+        // if (channel === "RECCOMENDATIONS_CHANNEL") {
+        //   addRating(val);
+        // } else if (channel === "ALL_USERS") {
+        addPostReply(val);
+        console.log("added");
+        //  }
       },
 
       file: (messageObject) => {

@@ -108,7 +108,7 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
   });
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} id='focus-transparent'>
       <CardActionArea>
         <CardMedia
           className={classes.media}
@@ -141,17 +141,6 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
                 : starCounts === 1
                 ? `${starCounts} Rating`
                 : `${starCounts} Ratings`}
-            </Typography>
-          </div>
-
-          <div class='review'>
-            {" "}
-            <Typography>
-              {messageCounts === 0
-                ? ""
-                : messageCounts === 1
-                ? `${messageCounts} Review`
-                : `${messageCounts} Reviews`}
             </Typography>
           </div>
         </CardContent>

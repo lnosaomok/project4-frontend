@@ -77,11 +77,51 @@ margin-top: 1.5rem;
   
  
 }
+#reply-post {
+  background-color: lightslategray;
+  border-radius: 20px;
+}
+
+#sign-in {
+ margin-left:20px;
+  border-radius: 20px;
+}
+
+.btn-flat {
+  margin-top: 20px;
+  
+}
+#round {
+  border-radius: 30px;
+  border: 1px solid grey;
+  padding-left:30px;
+  margin-right:20px;
+}
+#post-div {
+  margin-bottom: 2rem;
+}
+#replies-card {
+  margin-top: 1rem;
+  background-color: grey;
+}
+
+
+#replies-header {
+  margin-top: 3rem;
+}
 
 .review {
-  margin-top: 2rem;
+  margin-top: 1rem;
   display: flex;
  
+}
+.space {
+  height: 200px;
+  background-color: transparent;
+}
+#post-button {
+  display: flex;
+  align-self: flex-end;
 }
 
 input[type="text"]:not(.browser-default){

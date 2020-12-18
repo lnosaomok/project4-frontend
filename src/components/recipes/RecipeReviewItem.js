@@ -71,38 +71,11 @@ const RecipeReviewItem = ({ review }) => {
 
   return (
     <>
-      <div className='review-outer'>
-        <div className='rating-text'>
-          <div>
-            <Avatar className={classes.small}>
-              {transformedResult.username.charAt(0)}
-            </Avatar>
-          </div>
-          <div>{transformedResult.username}</div>
-        </div>
+      <div className='review-outer'></div>
 
-        <div className='rating-text'>
-          <div>
-            {transformedResult.rating && (
-              <StyledRating
-                name='customized-color'
-                value={transformedResult.rating}
-                defaultValue={0}
-                readOnly
-                getLabelText={(value) =>
-                  `${value} Heart${value !== 1 ? "s" : ""}`
-                }
-                precision={0.1}
-                icon={<FavoriteIcon fontSize='inherit' />}
-              />
-            )}
-          </div>
+      <div className='rating-text'></div>
 
-          <div>Submitted on {transformedResult.date}</div>
-        </div>
-
-        <div>{transformedResult.message}</div>
-      </div>
+      <div>{review.message}</div>
     </>
   );
 };

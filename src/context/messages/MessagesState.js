@@ -13,12 +13,16 @@ import {
   NEW_IMAGE_FILE,
   FILTER_RECOMMENDED_RECIPES,
   CLEAR_FILTERED_RECOMMENDED_RECIPES,
+  GET_ALL_POSTS,
+  ADD_POST,
+  ADD_POST_REPLIES,
+  GET_POST_REPLIES,
 } from "../types";
 
 /// SET UP CHANNELS
 const RECCOMENDATIONS_CHANNEL = "RECCOMENDATIONS_CHANNEL";
 const FILE_CHANNEL = "FILE_CHANNEL";
-const ALL_USERS = "user.*";
+const ALL_USERS = "ALL_USERS";
 
 //SET UP PUB/SUB CONFIGURATION METHODS
 //////////////////////////&&&///////////////////////////////////
@@ -46,7 +50,7 @@ function PubSub() {
   };
   this.addMessageAction = (channel, messageToken, reactionObj) => {
     pubnub.addMessageAction({
-      channel: RECCOMENDATIONS_CHANNEL,
+      channel: channel,
       messageTimetoken: messageToken,
       action: {
         type: "reaction",
@@ -102,30 +106,22 @@ export const MessagesState = (props) => {
   const initialState = {
     reccommended_recipes: [],
     filtered_recommended_recipes: null,
+    postReplies: [],
     error: null,
     loading: true,
     pubsub: pubsub,
     recipeRatings: [],
     imageFilesList: [],
+    allPosts: [],
   };
 
   const [state, dispatch] = useReducer(MessagesReducer, initialState);
 
   const addRecipeRecommendation = (obj) => {
-    // console.log(obj);
-    // dispatch({
-    //   type: ADD_RECCOMENDED_RECIPE,
-    //   item: obj,
-    // });
-
-    pubnub.deleteMessages(
-      {
-        channels: RECCOMENDATIONS_CHANNEL,
-      },
-      function (status, response) {
-        console.log(status, response);
-      }
-    );
+    dispatch({
+      type: ADD_RECCOMENDED_RECIPE,
+      item: obj,
+    });
   };
 
   const getReccomendedRecipes = () => {
@@ -138,6 +134,47 @@ export const MessagesState = (props) => {
         dispatch({
           type: GET_RECCOMENDED_RECIPES,
           item: res.channels.RECCOMENDATIONS_CHANNEL,
+        });
+      });
+  };
+
+  const addPost = (obj) => {
+    dispatch({
+      type: ADD_POST,
+      item: obj,
+    });
+  };
+
+  const getAllPosts = () => {
+    pubnub
+      .fetchMessages({
+        channels: ["ALL_USERS"],
+        count: 75,
+      })
+      .then(async (res) => {
+        dispatch({
+          type: GET_ALL_POSTS,
+          item: res.channels.ALL_USERS,
+        });
+      });
+  };
+
+  const addPostReply = (obj) => {
+    dispatch({
+      type: ADD_POST_REPLIES,
+      item: obj,
+    });
+  };
+
+  const getPostReplies = () => {
+    pubnub
+      .getMessageActions({
+        channel: ALL_USERS,
+      })
+      .then(async (res) => {
+        dispatch({
+          type: GET_POST_REPLIES,
+          item: res.data,
         });
       });
   };
@@ -225,9 +262,11 @@ export const MessagesState = (props) => {
       value={{
         pubsub: state.pubsub,
         recipeRatings: state.recipeRatings,
+        postReplies: state.postReplies,
         reccommended_recipes: state.reccommended_recipes,
         filtered_recommended_recipes: state.filtered_recommended_recipes,
         filterRecommendedRecipes,
+        allPosts: state.allPosts,
         clearFilteredRecommendedRecipes,
         filterRecommendedRecipes,
         error: state.error,
@@ -239,6 +278,10 @@ export const MessagesState = (props) => {
         getRatings,
         getImageFiles,
         newImageFile,
+        addPost,
+        getAllPosts,
+        getPostReplies,
+        addPostReply,
       }}
     >
       {props.children}

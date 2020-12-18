@@ -36,20 +36,6 @@ const CreateRecipe = () => {
     setRecipeIngr(e.target.value);
   };
 
-  const onChangeFile = (e) => {
-    const files = e.target.files;
-    if (files.length === 0) {
-      console.log("No file is selected");
-      return;
-    }
-
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      //setFile(files[0]);
-      // console.log("File content:", e.target.result);
-    };
-    reader.readAsDataURL(files[0]);
-  };
   const instructionValues = [];
   const onSubmit = async (e) => {
     e.preventDefault(e);
@@ -163,14 +149,6 @@ const CreateRecipe = () => {
                 class='validate'
                 autoComplete='off'
               />
-              {/* <button
-                onClick={() => {
-                  // Single File Upload
-                  selectFile();
-                }}
-              >
-                Click to Upload
-              </button> */}
 
               <FormHelperText id='outlined-weight-helper-text'>
                 <Typography variant='subtitle1' gutterBottom>

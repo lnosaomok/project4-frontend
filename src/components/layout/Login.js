@@ -54,11 +54,12 @@ const Login = (props) => {
           <div className='row'>
             <div className='input-field col s12'>
               <input
-                id='text'
+                id='round'
                 type='text'
                 placeholder='username'
                 name='username'
                 value={username}
+                autoComplete='off'
                 onChange={(e) => {
                   onChange(e);
                 }}
@@ -73,10 +74,11 @@ const Login = (props) => {
             </div>
             <div className='input-field col s12'>
               <input
-                id='text'
+                id='round'
                 type='text'
                 placeholder='password'
                 name='password'
+                autoComplete='off'
                 value={password}
                 onChange={(e) => {
                   onChange(e);
@@ -95,6 +97,7 @@ const Login = (props) => {
               <button
                 className='button-btn waves-effect waves-light'
                 type='submit'
+                id='sign-in'
               >
                 Submit
               </button>

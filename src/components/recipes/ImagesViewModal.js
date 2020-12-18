@@ -31,6 +31,7 @@ export default function ImagesViewDialog({ open, handleClose, allImages }) {
         <DialogTitle id='form-dialog-title'>
           Recipe Image Submissions
         </DialogTitle>
+        {tileData.length < 1 ? <h6>No images yet</h6> : ""}
         <DialogContent>
           <ImageTileList tileData={tileData} />
         </DialogContent>

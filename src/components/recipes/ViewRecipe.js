@@ -20,7 +20,6 @@ import Box from "@material-ui/core/Box";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import NutritionModal from "./NutritionModal";
 import Button from "@material-ui/core/Button";
-import ReviewsModal from "./ReviewsModal";
 import ImagesViewModal from "./ImagesViewModal";
 
 const StyledRating = withStyles({
@@ -130,12 +129,6 @@ const ViewRecipe = (props) => {
         healthLabels={data.recipe.recipe.diet_labels}
       />
 
-      <ReviewsModal
-        allReviews={filteredAllRatings}
-        open={openReviewsModal}
-        handleClose={handleCloseReviewsModal}
-      />
-
       <ImagesViewModal
         open={openImagesModal}
         handleClose={handleCloseImagesModal}
@@ -192,23 +185,6 @@ const ViewRecipe = (props) => {
                   </div>
 
                   <div class='review'>
-                    {" "}
-                    <Typography>
-                      {messageCounts === 0
-                        ? ""
-                        : messageCounts === 1
-                        ? `${messageCounts} Review`
-                        : `${messageCounts} Reviews`}
-                    </Typography>
-                    {"  "}
-                    <Button
-                      variant='outlined'
-                      color='primary'
-                      id='focus-transparent'
-                      onClick={handleClickReviewsModalOpen}
-                    >
-                      View Reviews
-                    </Button>
                     <Button
                       variant='outlined'
                       color='primary'
