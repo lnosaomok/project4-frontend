@@ -27,7 +27,9 @@ const UserPreferencesState = (props) => {
 
   const getUserPreferences = async () => {
     try {
-      const res = await axios.get("/api/getUserPreferences");
+      const res = await axios.get(
+        `${process.env.REACT_APP_BACKEND_API}/api/getUserPreferences`
+      );
       dispatch({
         type: GET_USER_PREFERENCES,
         payload: res.data,
@@ -45,7 +47,11 @@ const UserPreferencesState = (props) => {
     };
 
     try {
-      const res = await axios.post("/api/setUserPreferences", formData, config);
+      const res = await axios.post(
+        `${process.env.REACT_APP_BACKEND_API}/api/setUserPreferences`,
+        formData,
+        config
+      );
 
       dispatch({
         type: SET_USER_PREFERENCES,

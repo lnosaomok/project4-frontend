@@ -27,25 +27,6 @@ const RecipesState = (props) => {
   const searchRecipes = (query, userPreferences) => {
     let url = `https://api.edamam.com/search?q=${query}&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_KEY}`;
 
-    if (userPreferences.fatMacro) {
-      url += `&nutrients%5B${`FAT`}%5D=${userPreferences.fatMacro}`;
-    }
-
-    if (userPreferences.sugarMacro) {
-      url += `&nutrients%5B${`SUGAR`}%5D=${userPreferences.sugarMacro}`;
-    }
-
-    if (userPreferences.carbsMacro) {
-      url += `&nutrients%5B${`CHOCDF`}%5D=${userPreferences.carbsMacro}`;
-    }
-
-    if (userPreferences.proteinMacro) {
-      url += `&nutrients%5B${`PROCNT`}%5D=${userPreferences.proteinMacro}`;
-    }
-
-    if (userPreferences.diet) {
-      url += `&health=${userPreferences.diet}`;
-    }
     try {
       axios.get(url).then(async function (response) {
         let resp = response.data.hits;
@@ -112,7 +93,9 @@ const RecipesState = (props) => {
 
   const getSavedRecipes = async () => {
     try {
-      const res = await axios.get("/api/recipes");
+      const res = await axios.get(
+        `${process.env.REACT_APP_BACKEND_API}/api/recipes`
+      );
       dispatch({ type: GET_SAVED_RECIPES, payload: res.data });
     } catch (err) {
       dispatch({ type: GENERAL_ERROR });
@@ -127,7 +110,11 @@ const RecipesState = (props) => {
     };
 
     try {
-      const res = await axios.post("/api/recipes", formData, config);
+      const res = await axios.post(
+        `${process.env.REACT_APP_BACKEND_API}/api/recipes`,
+        formData,
+        config
+      );
 
       dispatch({
         type: SAVE_RECIPE,
@@ -151,7 +138,11 @@ const RecipesState = (props) => {
       },
     };
     try {
-      await axios.post("/api/recipes/update", formData, config);
+      await axios.post(
+        `${process.env.REACT_APP_BACKEND_API}/api/recipes/update`,
+        formData,
+        config
+      );
     } catch (err) {
       dispatch({
         type: GENERAL_ERROR,
