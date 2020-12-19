@@ -30,10 +30,10 @@ Users can also add image reviews to the recipes they tried
 
 ## Wireframes
 
-![Application Screenshot](/planning/all_posts_page.png)
-![Application Screenshot](/planning/landing_page.png)
-![Application Screenshot](/planning/login:register_page.png)
-![Application Screenshot](/planning/viewrecipe_page.png)
+![Application Screenshot](/planning/wireframes/all_posts_page.png)
+![Application Screenshot](/planning/wireframes/landing_page.png)
+![Application Screenshot](/planning/wireframes/login:register_page.png)
+![Application Screenshot](/planning/wireframes/viewrecipe_page.png)
 
 ## User Stories
 
