@@ -4,19 +4,19 @@
 
 Chef's Place is the app for chefs of all skill levels to show case their recipe creations and also engage with the cooking community. The app gives users the ability to add new recipes to their accound, recommend their recipes to others and also get nutrition information for the ingredients that they have
 
-![Application Screenshot](/project4/public/home.png)
+![Application Screenshot](/public/home.png)
 
 Users can also see the nutritional info for the recipes that they see recommeded
 
-![Application Screenshot](/project4/public/nutrition.png)
+![Application Screenshot](/public/nutrition.png)
 
 Users can also create posts that other users can see and add responses to.
 
-![Application Screenshot](/project4/public/posts.png)
+![Application Screenshot](/public/posts.png)
 
 Users can also add image reviews to the recipes they tried
 
-![Application Screenshot](/project4/public/images.png)
+![Application Screenshot](/public/images.png)
 
 ## Table of Contents
 
@@ -34,10 +34,15 @@ Users can also add image reviews to the recipes they tried
 - Installation/Setup?
 - Credits
 
-## Project
+## Project Github
 
 - [Front-End](https://github.com/lnosaomok/project4-frontend)
 - [Back-End](https://github.com/lnosaomok/project4-backend)
+
+## Project Deployed links
+
+- [Front-End](https://chef-place.herokuapp.com/)
+- [Back-End](https://chefsplace.herokuapp.com/)
 
 ## Wireframes
 
@@ -104,7 +109,7 @@ The App also makes use of the EDAMAM API where majority of the recommended recip
 | 1 Day  |                                  Final polishing                                   |
 | 1 Day  |                              Deployment/Documentation                              |
 
-## Challenges
+## Challenges/Issues
 
-- Working with pages that require data to be passed to them (show routes) and there is still a bug where the data props are list when user refreshes on a show route.
-- Working with pubsub system for adding reactions to messages
+- Working with pages (View post and view recipes) that require data to be passed to them (show routes) and there is still a bug where the data props are list when user refreshes on a show route.
+- Working with pubsub system for adding messages / reactions to messages. Currently new messages may be displayed multiple times although the server keeps a correct. User may have to refresh page to see correct count of messages.
