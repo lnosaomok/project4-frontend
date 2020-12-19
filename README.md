@@ -2,11 +2,11 @@
 
 ## Description
 
-Chef's Place is the app for chefs of all skill levels to show case their recipe creations and also engage with the cooking community. The app gives users the ability to add new recipes to their accound, recommend their recipes to others and also get nutrition information for the ingredients that they have
+Chef's Place is the app for chefs of all skill levels to show case their recipe creations and also engage with the cooking community. The app gives users the ability to add new recipes to their account, recommend their recipes to others and also get nutrition information for the ingredients that they have
 
 ![Application Screenshot](/public/home.png)
 
-Users can also see the nutritional info for the recipes that they see recommeded
+Users can also see the nutritional info for the recipes that are recommeded
 
 ![Application Screenshot](/public/nutrition.png)
 
@@ -17,22 +17,6 @@ Users can also create posts that other users can see and add responses to.
 Users can also add image reviews to the recipes they tried
 
 ![Application Screenshot](/public/images.png)
-
-## Table of Contents
-
-- Project
-  - GitHub Repo
-  - Production App
-- Wireframes
-  - link to Wireframes
-  - link to React Architecture?
-- User Stories
-- Features
-  - Components
-- Technologies
-  - Libraries
-- Installation/Setup?
-- Credits
 
 ## Project Github
 
@@ -46,13 +30,18 @@ Users can also add image reviews to the recipes they tried
 
 ## Wireframes
 
+![Application Screenshot](/planning/all_posts_page.png)
+![Application Screenshot](/planning/landing_page.png)
+![Application Screenshot](/planning/login:register_page.png)
+![Application Screenshot](/planning/viewrecipe_page.png)
+
 ## User Stories
 
 - MVP
 
 1. As a user, I want to be able to get nutrition information for a a recipe made out of ingredients that I have.
 2. As a user, I want to be able see recipes that other users have reccommeded.
-3. As a user I want to be able to see the ratings and image reviews for all the recommeded recipes.
+3. As a user I want to be able to see the ratings and image reviews for recommeded recipes.
 4. As a user I want to be able to see the nutritional info of the recipes other users have shared.
 5. As a user I want to be able to add ratings and reviews to recipes recommeded by other users.
 6. As a user, I want to be able to see message posts/questions asked by other user along with the responses that the user gets.
@@ -65,8 +54,6 @@ Users can also add image reviews to the recipes they tried
 2. Start mongoDB server locally
 3. Run npm install
 4. To run locally, use command npm run dev
-
-## Technologies
 
 ### Frontend
 
