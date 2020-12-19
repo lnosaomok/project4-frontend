@@ -1,15 +1,9 @@
 import React, { useEffect, Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
-import M from "materialize-css/dist/js/materialize.min";
 import AuthContext from "../../context/auth/AuthContext";
-const Navbar = (props) => {
-  useEffect(() => {
-    document.addEventListener("DOMContentLoaded", function () {
-      var elems = document.querySelectorAll(".sidenav");
-      var instances = M.Sidenav.init(elems);
-    });
-  });
+import { Redirect } from "react-router-dom";
 
+const Navbar = (props) => {
   const authContext = useContext(AuthContext);
   const { isAuthenticated, logout, user, loadUser } = authContext;
   useEffect(() => {
@@ -19,8 +13,7 @@ const Navbar = (props) => {
 
   const onLogout = async () => {
     await logout();
-
-    window.location.reload();
+    <Redirect to='/login' />;
   };
 
   const authLinks = (

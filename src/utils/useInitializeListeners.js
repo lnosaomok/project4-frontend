@@ -1,13 +1,11 @@
 import { useEffect, useContext } from "react";
 import MessagesContext from "../context/messages/MessagesContext";
-//import { pubsub } from "../context/messages/MessagesState";
 
 const useInitializeListeners = () => {
   const messagesContext = useContext(MessagesContext);
   const {
     addRecipeRecommendation,
     pubsub,
-    addRating,
     newImageFile,
     addPost,
     addPostReply,
@@ -25,12 +23,11 @@ const useInitializeListeners = () => {
         console.log("Received message", messageObject, "channel", channel);
         if (channel === "RECCOMENDATIONS_CHANNEL") {
           addRecipeRecommendation(obj);
-        } else if (channel === "ALL_USERS") {
+        } else if (channel === "ALL_USERS1") {
           addPost(obj);
         }
       },
       messageAction: (messageObject) => {
-        //  console.log("ReceivedACTION", messageObject);
         const {
           actionTimetoken,
           messageTimetoken,
@@ -38,13 +35,7 @@ const useInitializeListeners = () => {
           channel,
         } = messageObject.data;
         const val = { actionTimetoken, messageTimetoken, value };
-
-        // if (channel === "RECCOMENDATIONS_CHANNEL") {
-        //   addRating(val);
-        // } else if (channel === "ALL_USERS") {
         addPostReply(val);
-        console.log("added");
-        //  }
       },
 
       file: (messageObject) => {

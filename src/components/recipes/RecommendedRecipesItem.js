@@ -10,12 +10,9 @@ import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 import MessagesContext from "../../context/messages/MessagesContext";
 import Rating from "@material-ui/lab/Rating";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
-import Box from "@material-ui/core/Box";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import { useEffect } from "react";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 const useStyles = makeStyles({
   root: {
@@ -37,20 +34,15 @@ const StyledRating = withStyles({
 
 export default function RecommendedRecipesItem({ recipe, timetoken }) {
   const messagesContext = useContext(MessagesContext);
-  const {
-    getReccomendedRecipes,
-    reccommended_recipes,
-    getRatings,
-    getImageFiles,
-    imageFilesList,
-    recipeRatings,
-    loading,
-  } = messagesContext;
+  const { getImageFiles, imageFilesList, recipeRatings } = messagesContext;
+
   useEffect(() => {
     getImageFiles();
   }, []);
+
   const classes = useStyles();
 
+  /////get the images that have been uploaded for this recipe
   let imagesForRecipe =
     imageFilesList && imageFilesList.length > 0
       ? imageFilesList
@@ -63,24 +55,29 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
       : [];
 
   const ratingsArr = ["0", "1", "2", "3", "4", "5"];
+
+  /// get ratings for this recipe
   let recipeRatingsStars =
     recipeRatings && recipeRatings.length > 0
       ? recipeRatings.filter((item) => {
           return item.messageTimetoken === timetoken;
         })
       : [];
-
+  /// get ratings for this recipe /// keep one variable that is not being transformed
   let allRatingsForRecipe =
     recipeRatings && recipeRatings.length > 0
       ? recipeRatings.filter((item) => {
           return item.messageTimetoken === timetoken;
         })
       : [];
+
+  ///// make sure that number is in our rating options (not over 5 or less than 0)
   recipeRatingsStars = recipeRatingsStars.filter((rating) => {
     if (ratingsArr.includes(rating.value)) {
       return rating;
     }
   });
+
   let starCounts = recipeRatingsStars.length;
   recipeRatingsStars = recipeRatingsStars
     .map((rating) => {
@@ -146,9 +143,6 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        {/* <Button size='small' color='primary'>
-          Share
-        </Button> */}
         <Button size='small' color='primary'>
           <Link
             to={{

@@ -7,16 +7,21 @@ import Spinner from "../layout/Spinner";
 import axios from "axios";
 import NutritionTable from "./NutritionTable";
 import Chip from "@material-ui/core/Chip";
-import DeleteIcon from "@material-ui/icons/Delete";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import KeyboardVoiceIcon from "@material-ui/icons/KeyboardVoice";
-import Icon from "@material-ui/core/Icon";
 import SaveIcon from "@material-ui/icons/Save";
 import Typography from "@material-ui/core/Typography";
-import { v4 as uuidv4 } from "uuid";
 import { useFileUpload } from "use-file-upload";
 import RecipesContext from "../../context/recipes/RecipesContext";
 import M from "materialize-css/dist/js/materialize.min";
+import AlertContext from "../../context/alert/AlertContext";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+}));
 
 const CreateRecipe = () => {
   const [recipeName, setRecipeName] = useState("");
@@ -24,10 +29,16 @@ const CreateRecipe = () => {
   const [loading, setLoading] = useState(false);
   const [nutritionInfo, setNutritionInfo] = useState(null);
   const [count, setCount] = useState(0);
-  // const [file, setFile] = useState(null);
   const [file, selectFile] = useFileUpload();
+  const [error, setError] = useState(null);
+  const classes = useStyles();
+
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
+
   const recipesContext = useContext(RecipesContext);
-  const { recipe_result, saved_recipes, saveRecipe } = recipesContext;
+  const { saveRecipe } = recipesContext;
+
   const onChangeRecipeName = (e) => {
     setRecipeName(e.target.value);
   };
@@ -37,28 +48,42 @@ const CreateRecipe = () => {
   };
 
   const instructionValues = [];
+
   const onSubmit = async (e) => {
     e.preventDefault(e);
+    //// get the values of all the "steps" elements
     document.querySelectorAll("#step0").forEach((item) => {
-      instructionValues.push(item.value);
+      if (!item === "") {
+        instructionValues.push(item.value);
+      }
     });
-    console.log(instructionValues);
-    console.log(file);
-    let recipe = {
-      calories: nutritionInfo.calories,
-      label: recipeName,
-      ingredientLines: recipeIngr.split(","),
-      image: file.source,
-      recipe_yield: nutritionInfo.yield,
-      source: instructionValues,
-      allNutrients: Object.values(nutritionInfo.totalDaily),
-      diet_labels: nutritionInfo.dietLabels,
-      url: "##",
-    };
 
-    let type = "search";
-    M.toast({ html: "Recipe Created!" });
-    await saveRecipe({ recipe, type });
+    if (recipeIngr === "" || recipeName === "") {
+      M.toast({ html: "Please fill out all required fields" });
+    } else if (file === null) {
+      setAlert("Please upload an image", "danger");
+      M.toast({ html: "Please upload an image" });
+    } else if (instructionValues.includes("")) {
+      M.toast({ html: "Please complete all instruction steps" });
+    } else {
+      let recipe = {
+        calories: nutritionInfo.calories,
+        label: recipeName,
+        ingredientLines: recipeIngr.split(","),
+        image: file.source,
+        recipe_yield: nutritionInfo.yield,
+        source: instructionValues,
+        allNutrients: Object.values(nutritionInfo.totalDaily),
+        diet_labels: nutritionInfo.dietLabels,
+      };
+
+      /////"personal type indicated the user created the recipe"
+      let type = "personal";
+
+      saveRecipe({ recipe, type });
+      M.toast({ html: "Recipe Created!" });
+      window.location.reload();
+    }
   };
 
   const TextArea = () => {
@@ -91,6 +116,7 @@ const CreateRecipe = () => {
       </>
     );
   };
+
   const displayTextArea = [TextArea()];
   const [textAreas, setTextAreas] = useState(displayTextArea);
 
@@ -98,34 +124,35 @@ const CreateRecipe = () => {
     setTextAreas((textAreas) => [...textAreas, TextArea()]);
     setCount(count + 1);
   };
+
   const getRecipeNutrition = () => {
-    let ingredients = recipeIngr.split(",");
-    const reqObj = { title: recipeName, ingr: ingredients };
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    // console.log(ingredients);
-    const url = `https://api.edamam.com/api/nutrition-details?app_id=${process.env.REACT_APP_NUTRITION_API_ID}&app_key=${process.env.REACT_APP_NUTRITION_API_KEY}`;
-    setLoading(true);
+    if (recipeIngr === "" || recipeIngr.split(",").length < 2) {
+      setAlert("you must have at least two ingredients", "danger");
+    } else if (recipeName === "") {
+      setAlert("recipe must have name to get nutrition data", "danger");
+    } else {
+      let ingredients = recipeIngr.split(",");
+      const reqObj = { title: recipeName, ingr: ingredients };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-    axios.post(url, reqObj, config).then(function (response) {
-      console.log(response);
-      setNutritionInfo(response.data);
-    });
-    setLoading(false);
+      const url = `https://api.edamam.com/api/nutrition-details?app_id=${process.env.REACT_APP_NUTRITION_API_ID}&app_key=${process.env.REACT_APP_NUTRITION_API_KEY}`;
+      setLoading(true);
+
+      axios.post(url, reqObj, config).then(function (response, error) {
+        console.log(response);
+        if (error) {
+          setError(error);
+          console.log(error, "erro");
+        }
+        setNutritionInfo(response.data);
+      });
+      setLoading(false);
+    }
   };
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      "& > *": {
-        margin: theme.spacing(1),
-      },
-    },
-  }));
-
-  const classes = useStyles();
-  console.log(file);
 
   return (
     <>
@@ -152,7 +179,7 @@ const CreateRecipe = () => {
 
               <FormHelperText id='outlined-weight-helper-text'>
                 <Typography variant='subtitle1' gutterBottom>
-                  Recipe Name
+                  Recipe Name (required)
                 </Typography>
               </FormHelperText>
             </div>
@@ -166,11 +193,10 @@ const CreateRecipe = () => {
               className={classes.button}
               startIcon={<CloudUploadIcon />}
               onClick={() => {
-                // Single File Upload
                 selectFile();
               }}
             >
-              Upload Recipe Image
+              Upload Recipe Image (required)
             </Button>
             <div className='img-div'>
               {" "}
@@ -197,7 +223,7 @@ const CreateRecipe = () => {
               />
               <FormHelperText id='outlined-weight-helper-text'>
                 <Typography variant='subtitle1' gutterBottom>
-                  Ingredients List
+                  Enter Comma-separated list of ingredients (required)
                 </Typography>
               </FormHelperText>
             </div>
@@ -209,7 +235,7 @@ const CreateRecipe = () => {
                 getRecipeNutrition();
               }}
             >
-              Generate Nutrition Data
+              Generate Ingredients Nutrition Data
             </Button>
           </div>
 
@@ -235,6 +261,13 @@ const CreateRecipe = () => {
                 </div>
               </>
             )}
+
+            {error && (
+              <p className='error-text'>
+                Could not fetch nutrition data. Make sure you have valid
+                ingredients
+              </p>
+            )}
           </div>
           <div class='row'>
             <div class='input-field col s12'>
@@ -254,6 +287,7 @@ const CreateRecipe = () => {
             size='large'
             type='submit'
             className={classes.button}
+            disabled={nutritionInfo === null}
             startIcon={<SaveIcon />}
           >
             Save

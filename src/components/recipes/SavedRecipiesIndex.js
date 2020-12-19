@@ -12,11 +12,11 @@ import Spinner from "../layout/Spinner";
 import NutritionTable from "./NutritionTable";
 import Chip from "@material-ui/core/Chip";
 import CollectionButton from "./CollectionButton";
-import RatingModal from "./RatingModal";
+import RatingModal from "../recipes/Modals/RatingModal";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import NutritionModal from "./NutritionModal";
-import UploadModal from "./UploadModal";
+import NutritionModal from "../recipes/Modals/NutritionModal";
+import UploadModal from "../recipes/Modals/UploadModal";
 const drawerWidth = 300;
 
 const useStyles = makeStyles((theme) => ({
@@ -45,12 +45,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SavedRecipesIndex(props) {
-  const [open, setOpen] = React.useState(false);
-
+  const classes = useStyles();
   const [openNutritionModal, setOpenNutritionModal] = React.useState(false);
   const [openRatingsModal, setOpenRatingsModal] = React.useState(false);
   const [openUploadModal, setOpenUploadModal] = React.useState(false);
 
+  //// handle modals
   const handleClickUploadModalOpen = () => {
     setOpenUploadModal(true);
   };
@@ -76,38 +76,15 @@ export default function SavedRecipesIndex(props) {
   };
 
   const recipesContext = useContext(RecipesContext);
-  const {
-    recipe_result,
-    saved_recipes,
-    loading,
-    saveRecipe,
-    clearErrors,
-    searchRecipes,
-    getSavedRecipes,
-    setHealthLabels,
-    nutritionObject,
-    setNutritionObject,
-    healthLabels,
-  } = recipesContext;
-  console.log(saved_recipes);
+  const { saved_recipes, loading, getSavedRecipes } = recipesContext;
+
   useEffect(async () => {
     await getSavedRecipes();
   }, []);
 
-  useEffect(() => {
-    if (document.querySelector(".MuiListItemText-primary")) {
-      document
-        .querySelectorAll(".MuiListItemText-primary")
-        .forEach((element, index) => {
-          element.id = index;
-        });
-    }
-  }, []);
-  const classes = useStyles();
-
   const searchedRecipes = saved_recipes
     ? saved_recipes.filter((recipe) => {
-        return recipe.type === "search";
+        return recipe.type === "personal";
       })
     : null;
 
@@ -194,7 +171,7 @@ export default function SavedRecipesIndex(props) {
                       {saved_recipes[props.match.params.index].recipe.label}
                     </h4>
                     {saved_recipes[props.match.params.index].recipe.type ===
-                    "search" ? (
+                    "personal" ? (
                       <CollectionButton
                         recipe={
                           saved_recipes[props.match.params.index].recipe.recipe
@@ -257,14 +234,26 @@ export default function SavedRecipesIndex(props) {
                       return <li class='collection-item'>{one}</li>;
                     })}
                   </ul>
-
-                  <a
-                    href='#'
-                    onClick="window.open('<%=element.favourite.url%>', '_blank');"
-                  >
-                    Cooking Instructions from
-                    {saved_recipes[props.match.params.index].recipe.url}
-                  </a>
+                  {Array.isArray(
+                    saved_recipes[props.match.params.index].recipe.source
+                  ) ? (
+                    <ul className='collection'>
+                      <li class='collection-header'>
+                        <h5>Instructions</h5>
+                      </li>{" "}
+                      {saved_recipes[
+                        props.match.params.index
+                      ].recipe.source.map((item, index) => {
+                        return (
+                          <li class='collection-item'>{`${
+                            index + 1
+                          } -${item}`}</li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <a href='#'>Cooking Instructions </a>
+                  )}
                 </div>
               </div>
             </div>

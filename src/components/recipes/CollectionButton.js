@@ -4,33 +4,14 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import M from "materialize-css/dist/js/materialize.min.js";
 import AuthContext from "../../context/auth/AuthContext";
-import UserPreferencesContext from "../../context/userPreferences/UserPreferencesContext";
 import MessagesContext from "../../context/messages/MessagesContext";
 
 export default function CollectionButton({ recipe }) {
   const messagesContext = useContext(MessagesContext);
   const {
-    pubsub: {
-      fetchMessages,
-      publish,
-      sendFile,
-      addListener,
-      addMessageAction,
-      getMessageActions,
-      getFile,
-    },
+    pubsub: { publish },
   } = messagesContext;
   const authContext = useContext(AuthContext);
-  const userPreferencesContext = useContext(UserPreferencesContext);
-  const {
-    userPreferences,
-    error,
-    getUserPreferences,
-    setUserPreferences,
-  } = userPreferencesContext;
-  useEffect(async () => {
-    await getUserPreferences();
-  }, []);
   const { user } = authContext;
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -43,21 +24,17 @@ export default function CollectionButton({ recipe }) {
   };
 
   const recommendRecipeEveryone = (e, channelName) => {
-    console.log(userPreferences);
-
     setAnchorEl(null);
     let channel = "RECCOMENDATIONS_CHANNEL";
     publish(
       {
         recipe,
         name: user.username,
-        recommendations_wanted: userPreferences.channels,
       },
       channel
     );
+    M.toast({ html: "Recommendation added!" });
   };
-
-  const recommendRecipeToOtherUser = () => {};
 
   return (
     <div>
@@ -85,14 +62,6 @@ export default function CollectionButton({ recipe }) {
           }}
         >
           Recommend to Everyone
-        </MenuItem>
-        <MenuItem
-          id='capitalize'
-          onClick={(e) => {
-            recommendRecipeToOtherUser(e);
-          }}
-        >
-          Recommend to Someone
         </MenuItem>
       </Menu>
     </div>

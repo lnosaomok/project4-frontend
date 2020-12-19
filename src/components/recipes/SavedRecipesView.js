@@ -1,24 +1,18 @@
 import React, { useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import RecipesContext from "../../context/recipes/RecipesContext";
 import Spinner from "../layout/Spinner";
-import NutritionTable from "./NutritionTable";
 import Chip from "@material-ui/core/Chip";
 import CollectionButton from "./CollectionButton";
-import RatingModal from "./RatingModal";
+import RatingModal from "../recipes/Modals/RatingModal";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import NutritionModal from "./NutritionModal";
-import { useFileUpload } from "use-file-upload";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import UploadModal from "./UploadModal";
+import NutritionModal from "../recipes/Modals/NutritionModal";
+import UploadModal from "../recipes/Modals/UploadModal";
 
 const drawerWidth = 300;
 
@@ -30,15 +24,6 @@ const useStyles = makeStyles((theme) => ({
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
   },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-    marginTop: `${63}px`,
-  },
-  // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
@@ -49,11 +34,13 @@ const useStyles = makeStyles((theme) => ({
 
 const SavedRecipesView = (props) => {
   const { data } = props.location;
-  console.log(data);
+
+  ////////knowne issue : the page loses the props on refresh. Issue is yet to be resolved ///////
   const [openNutritionModal, setOpenNutritionModal] = React.useState(false);
   const [openRatingsModal, setOpenRatingsModal] = React.useState(false);
   const [openUploadModal, setOpenUploadModal] = React.useState(false);
 
+  ///// control modals open/close property
   const handleClickUploadModalOpen = () => {
     setOpenUploadModal(true);
   };
@@ -79,19 +66,7 @@ const SavedRecipesView = (props) => {
   };
 
   const recipesContext = useContext(RecipesContext);
-  const {
-    recipe_result,
-    saved_recipes,
-    loading,
-    saveRecipe,
-    clearErrors,
-    searchRecipes,
-    getSavedRecipes,
-    setHealthLabels,
-    nutritionObject,
-    setNutritionObject,
-    healthLabels,
-  } = recipesContext;
+  const { saved_recipes, loading, getSavedRecipes } = recipesContext;
 
   useEffect(async () => {
     await getSavedRecipes();
@@ -106,11 +81,12 @@ const SavedRecipesView = (props) => {
         });
     }
   }, []);
+
   const classes = useStyles();
 
   const searchedRecipes = saved_recipes
     ? saved_recipes.filter((recipe) => {
-        return recipe.type === "search";
+        return recipe.type === "personal";
       })
     : null;
 
@@ -192,7 +168,7 @@ const SavedRecipesView = (props) => {
                   <div className='title-bar'>
                     <h4>{data.recipe.label}</h4>
                     <div>
-                      {data.type === "search" ? (
+                      {data.type === "personal" ? (
                         <CollectionButton recipe={data.recipe} />
                       ) : !data.isRated ? (
                         <div className='buttons-mix'>
@@ -248,13 +224,24 @@ const SavedRecipesView = (props) => {
                     })}
                   </ul>
 
-                  <a
-                    href='#'
-                    onClick="window.open('<%=element.favourite.url%>', '_blank');"
-                  >
-                    Cooking Instructions from
-                    {data.recipe.url}
-                  </a>
+                  {Array.isArray(data.recipe.source) ? (
+                    <ul className='collection'>
+                      <li class='collection-header'>
+                        <h5>Instructions</h5>
+                      </li>{" "}
+                      {data.recipe.source.map((item, index) => {
+                        return (
+                          <li class='collection-item'>{`${
+                            index + 1
+                          } -${item}`}</li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <a href='#'>
+                      Cooking Instructions from {data.recipe.source}
+                    </a>
+                  )}
                 </div>
               </div>
             </div>

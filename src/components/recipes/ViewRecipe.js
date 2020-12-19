@@ -1,26 +1,16 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 import RecipesContext from "../../context/recipes/RecipesContext";
-import Spinner from "../../components/layout/Spinner";
-import NutritionTable from "./NutritionTable";
 import M from "materialize-css/dist/js/materialize.min";
 import Chip from "@material-ui/core/Chip";
 import Rating from "@material-ui/lab/Rating";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
-import Box from "@material-ui/core/Box";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import NutritionModal from "./NutritionModal";
+import NutritionModal from "../recipes/Modals/NutritionModal";
 import Button from "@material-ui/core/Button";
-import ImagesViewModal from "./ImagesViewModal";
+import ImagesViewModal from "../recipes/Modals/ImagesViewModal";
 
 const StyledRating = withStyles({
   iconFilled: {
@@ -30,6 +20,7 @@ const StyledRating = withStyles({
     color: "#ff3d47",
   },
 })(Rating);
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -62,9 +53,9 @@ const ViewRecipe = (props) => {
   const recipesContext = useContext(RecipesContext);
   const { saveRecipe } = recipesContext;
   const [openNutritionModal, setOpenNutritionModal] = React.useState(false);
-  const [openReviewsModal, setOpenReviewsModal] = React.useState(false);
   const [openImagesModal, setOpenImagesModal] = React.useState(false);
 
+  ////// handle modal open/close state
   const handleClickImagesModalOpen = () => {
     setOpenImagesModal(true);
   };
@@ -81,13 +72,7 @@ const ViewRecipe = (props) => {
     setOpenNutritionModal(false);
   };
 
-  const handleClickReviewsModalOpen = () => {
-    setOpenReviewsModal(true);
-  };
-
-  const handleCloseReviewsModal = () => {
-    setOpenReviewsModal(false);
-  };
+  ////////// known issue; page will error out on refresh because props values are lost on refresh. Issue still open
   const { data } = props.location;
 
   const saveRecipeItem = () => {
@@ -95,31 +80,8 @@ const ViewRecipe = (props) => {
     saveRecipe({ recipe: data.recipe.recipe, type, timetoken: data.timetoken });
     M.toast({ html: "Saved" });
   };
-  const {
-    messageCounts,
-    recipeRatingsMessages,
-    recipeRatingsStars,
-    starCounts,
-    allRatings,
-    allImages,
-  } = data;
-  console.log(data.allImages);
+  const { recipeRatingsStars, starCounts } = data;
 
-  function groupByKey(array, key) {
-    return array.reduce((hash, obj) => {
-      if (
-        obj[key] === undefined ||
-        obj[key] === "16081765502020076" || //// exclude bad keys
-        obj[key] === "16081557291811298"
-      )
-        return hash;
-      return Object.assign(hash, {
-        [obj[key]]: (hash[obj[key]] || []).concat(obj),
-      });
-    }, {});
-  }
-  const filteredAllRatings = groupByKey(allRatings, "messageTimetoken");
-  console.log(groupByKey(allRatings, "messageTimetoken"));
   return (
     <>
       <NutritionModal
@@ -219,14 +181,24 @@ const ViewRecipe = (props) => {
                       return <li class='collection-item'>{one}</li>;
                     })}
                   </ul>
-
-                  <a
-                    href='#'
-                    onClick="window.open('<%=element.favourite.url%>', '_blank');"
-                  >
-                    Cooking Instructions from
-                    {data.recipe.recipe.url}
-                  </a>
+                  {Array.isArray(data.recipe.recipe.source) ? (
+                    <ul className='collection'>
+                      <li class='collection-header'>
+                        <h5>Instructions</h5>
+                      </li>{" "}
+                      {data.recipe.recipe.source.map((item, index) => {
+                        return (
+                          <li class='collection-item'>{`${
+                            index + 1
+                          } -${item}`}</li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <a href='#'>
+                      Cooking Instructions from {data.recipe.recipe.source}
+                    </a>
+                  )}
                 </div>
               </div>
             </div>

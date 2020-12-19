@@ -2,16 +2,11 @@ import React, { useContext, useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import MessagesContext from "../../context/messages/MessagesContext";
 import AuthContext from "../../context/auth/AuthContext";
-
-import { Link } from "react-router-dom";
-import M from "materialize-css/dist/js/materialize.min";
 
 const ViewPost = (props) => {
   const { data } = props.location;
@@ -21,29 +16,31 @@ const ViewPost = (props) => {
 
   const messagesContext = useContext(MessagesContext);
   const {
-    pubsub: { fetchMessages, publish, addPost, addMessageAction },
+    pubsub: { addMessageAction },
     getPostReplies,
     postReplies,
   } = messagesContext;
+
   const onChangePostReply = (e) => {
     setPostReply(e.target.value);
   };
+
   useEffect(() => {
     getPostReplies();
   }, []);
-  console.log(postReplies);
+
   let messagePostReplies =
     postReplies && postReplies.length > 0
       ? postReplies.filter((item) => {
           return item.messageTimetoken === data.post.timetoken;
         })
       : [];
+
   const publishReply = () => {
-    let channel = "ALL_USERS";
+    let channel = "ALL_USERS1";
     let username = user.username;
     let reply = `${username},${postReply}`;
     addMessageAction(channel, data.post.timetoken, reply);
-
     setPostReply("");
   };
 
@@ -60,8 +57,9 @@ const ViewPost = (props) => {
       padding: theme.spacing(3),
     },
   }));
+
   const classes = useStyles();
-  // const { post } = data;
+
   return (
     <div className='card container' id='container'>
       <div id='post-div'>

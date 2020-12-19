@@ -1,23 +1,18 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Rating from "@material-ui/lab/Rating";
-import PropTypes from "prop-types";
 import M from "materialize-css/dist/js/materialize.min";
 import { withStyles } from "@material-ui/core/styles";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
-import Box from "@material-ui/core/Box";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import Typography from "@material-ui/core/Typography";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import MessagesContext from "../../context/messages/MessagesContext";
-import AuthContext from "../../context/auth/AuthContext";
-import RecipesContext from "../../context/recipes/RecipesContext";
+import MessagesContext from "../../../context/messages/MessagesContext";
+import AuthContext from "../../../context/auth/AuthContext";
+import RecipesContext from "../../../context/recipes/RecipesContext";
 
 import { useState } from "react";
 
@@ -27,21 +22,11 @@ export default function RatingModal({ open, handleClose, timetoken, id }) {
   const recipesContext = useContext(RecipesContext);
   const { updateRating } = recipesContext;
   const messagesContext = useContext(MessagesContext);
+
   const {
-    pubsub: {
-      fetchMessages,
-      publish,
-      sendFile,
-      addListener,
-      addMessageAction,
-      getMessageActions,
-      getFile,
-    },
-    pubnub,
-    getReccomendedRecipes,
-    reccommended_recipes,
-    loading,
+    pubsub: { addMessageAction },
   } = messagesContext;
+
   const authContext = useContext(AuthContext);
   const { user } = authContext;
 
@@ -53,7 +38,7 @@ export default function RatingModal({ open, handleClose, timetoken, id }) {
       color: "#ff3d47",
     },
   })(Rating);
-  console.log(id);
+
   const submitRating = async () => {
     if (ratingMessage === "" || value === "0") {
       M.toast({ html: "please fill in rating details" });
@@ -90,7 +75,8 @@ export default function RatingModal({ open, handleClose, timetoken, id }) {
         <DialogTitle id='form-dialog-title'>Add Rating</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please give your feedback on this recipe.
+            Please give your feedback on this recipe. (multiple ratings not
+            allowed, only the first rating will be shown)
           </DialogContentText>
           <StyledRating
             name='customized-color'

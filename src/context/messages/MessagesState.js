@@ -1,7 +1,6 @@
 import React, { useReducer } from "react";
 import MessagesContext from "./MessagesContext";
 import MessagesReducer from "./MessagesReducer";
-import { v4 as uuid } from "uuid";
 import PubNub from "pubnub";
 import pubnubConfig from "../../pubnub.config.json";
 import {
@@ -22,7 +21,7 @@ import {
 /// SET UP CHANNELS
 const RECCOMENDATIONS_CHANNEL = "RECCOMENDATIONS_CHANNEL";
 const FILE_CHANNEL = "FILE_CHANNEL";
-const ALL_USERS = "ALL_USERS";
+const ALL_USERS1 = "ALL_USERS1";
 
 //SET UP PUB/SUB CONFIGURATION METHODS
 //////////////////////////&&&///////////////////////////////////
@@ -30,7 +29,7 @@ const pubnub = new PubNub(pubnubConfig);
 
 function PubSub() {
   pubnub.subscribe({
-    channels: [RECCOMENDATIONS_CHANNEL, FILE_CHANNEL, ALL_USERS],
+    channels: [RECCOMENDATIONS_CHANNEL, FILE_CHANNEL, ALL_USERS1],
   });
 
   this.addListener = (listenerConfig) => {
@@ -148,13 +147,13 @@ export const MessagesState = (props) => {
   const getAllPosts = () => {
     pubnub
       .fetchMessages({
-        channels: ["ALL_USERS"],
+        channels: ["ALL_USERS1"],
         count: 75,
       })
       .then(async (res) => {
         dispatch({
           type: GET_ALL_POSTS,
-          item: res.channels.ALL_USERS,
+          item: res.channels.ALL_USERS1,
         });
       });
   };
@@ -169,7 +168,7 @@ export const MessagesState = (props) => {
   const getPostReplies = () => {
     pubnub
       .getMessageActions({
-        channel: ALL_USERS,
+        channel: ALL_USERS1,
       })
       .then(async (res) => {
         dispatch({
@@ -209,19 +208,19 @@ export const MessagesState = (props) => {
     });
 
     let urlsArr = [];
+    if (imagefiles) {
+      imagefiles.channels.FILE_CHANNEL.forEach((element) => {
+        let imgVal = pubnub.getFileUrl({
+          channel: "FILE_CHANNEL",
+          id: element.message.file.id,
+          name: element.message.file.name,
+        });
 
-    await imagefiles.channels.FILE_CHANNEL.forEach((element) => {
-      console.log(element);
-      let imgVal = pubnub.getFileUrl({
-        channel: "FILE_CHANNEL",
-        id: element.message.file.id,
-        name: element.message.file.name,
+        let messageVal = element.message.message;
+
+        urlsArr.push({ imgVal, messageVal, timetoken: element.timetoken });
       });
-
-      let messageVal = element.message.message;
-
-      urlsArr.push({ imgVal, messageVal, timetoken: element.timetoken });
-    });
+    }
 
     await dispatch({
       type: GET_IMAGE_FILES,

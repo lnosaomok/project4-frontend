@@ -5,8 +5,6 @@ import axios from "axios";
 import {
   GENERAL_ERROR,
   GET_SAVED_RECIPES,
-  SEARCH_RECIPE,
-  DELETE_SAVED_RECIPE,
   CLEAR_ERRORS,
   SET_NUTRITION_OBJECT,
   SET_HEALTH_LABELS,
@@ -24,78 +22,10 @@ const RecipesState = (props) => {
   };
 
   const [state, dispatch] = useReducer(RecipesReducer, initialState);
-  const searchRecipes = (query, userPreferences) => {
-    let url = `https://api.edamam.com/search?q=${query}&app_id=${process.env.REACT_APP_ID}&app_key=${process.env.REACT_APP_KEY}`;
-
-    try {
-      axios.get(url).then(async function (response) {
-        let resp = response.data.hits;
-        resp = resp.filter((each) => {
-          let recipeLabels = each.recipe.label.toLowerCase();
-          query = query.toLowerCase();
-
-          if (recipeLabels.includes(query)) {
-            return each;
-          }
-        });
-
-        let transformedResult = [];
-        let finalData = [];
-
-        await resp.forEach((result) => {
-          transformedResult.push(result);
-        });
-        transformedResult.forEach((result) => {
-          let resultObj = {};
-          let nutrients = [];
-          let allNutrients = [];
-          let {
-            FAT,
-            CHOCDF,
-            SUGAR,
-            PROCNT,
-            FIBTG,
-          } = result.recipe.totalNutrients;
-          for (const key in result.recipe.totalNutrients) {
-            allNutrients.push(result.recipe.totalDaily[`${key}`]);
-          }
-          nutrients.push(FAT);
-          nutrients.push(CHOCDF);
-          nutrients.push(SUGAR);
-          nutrients.push(PROCNT);
-          nutrients.push(FIBTG);
-
-          resultObj.nutrients = nutrients;
-          resultObj.label = result.recipe.label;
-          resultObj.image = result.recipe.image;
-          resultObj.source = result.recipe.source;
-          resultObj.url = result.recipe.url;
-          resultObj.diet_labels = result.recipe.dietLabels;
-          resultObj.recipe_yield = result.recipe.yield;
-          resultObj.ingredientLines = result.recipe.ingredientLines;
-          resultObj.ingredients = result.recipe.ingredients;
-          resultObj.calories = result.recipe.calories;
-          resultObj.allNutrients = allNutrients;
-          finalData.push(resultObj);
-          dispatch({
-            type: SEARCH_RECIPE,
-            payload: finalData,
-          });
-        });
-      });
-    } catch (err) {
-      dispatch({
-        type: GENERAL_ERROR,
-        payload: err.response.data.msg,
-      });
-    }
-  };
 
   const getSavedRecipes = async () => {
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_BACKEND_API}/api/recipes`
-      );
+      const res = await axios.get("/api/recipes");
       dispatch({ type: GET_SAVED_RECIPES, payload: res.data });
     } catch (err) {
       dispatch({ type: GENERAL_ERROR });
@@ -110,11 +40,7 @@ const RecipesState = (props) => {
     };
 
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_BACKEND_API}/api/recipes`,
-        formData,
-        config
-      );
+      const res = await axios.post("/api/recipes", formData, config);
 
       dispatch({
         type: SAVE_RECIPE,
@@ -138,11 +64,7 @@ const RecipesState = (props) => {
       },
     };
     try {
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_API}/api/recipes/update`,
-        formData,
-        config
-      );
+      const res = await axios.post("/api/recipes/update", formData, config);
     } catch (err) {
       dispatch({
         type: GENERAL_ERROR,
@@ -173,7 +95,6 @@ const RecipesState = (props) => {
         clearErrors,
         error: state.error,
         saveRecipe,
-        searchRecipes,
         getSavedRecipes,
         nutritionObject: state.nutritionObject,
         setNutritionObject,

@@ -16,6 +16,7 @@ const FilterRecommended = () => {
     }
   });
 
+  /// set filtered values state as user types
   const onChange = (e) => {
     if (searchRef.current.value !== "") {
       filterRecommendedRecipes(e.target.value);
@@ -33,7 +34,7 @@ const FilterRecommended = () => {
               id='icon_prefix2'
               ref={searchRef}
               class='materialize-textarea'
-              placeholder='Filter Books...'
+              placeholder='Filter Recipes...'
               onChange={onChange}
             ></textarea>
 

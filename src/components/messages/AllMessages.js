@@ -3,27 +3,18 @@ import AllMessagesItem from "./AllMessagesItem";
 import Button from "@material-ui/core/Button";
 import AddPostModal from "./AddPostModal";
 import MessagesContext from "../../context/messages/MessagesContext";
-import AuthContext from "../../context/auth/AuthContext";
 import useInitializeListeners from "../../utils/useInitializeListeners";
 
 const AllMessages = () => {
-  const authContext = useContext(AuthContext);
-  const { user } = authContext;
-
   useInitializeListeners();
 
   const messagesContext = useContext(MessagesContext);
-  const {
-    pubsub: { fetchMessages, publish, addPost },
-    getPostReplies,
-    allPosts,
-    getAllPosts,
-    postReplies,
-  } = messagesContext;
+  const { getPostReplies, allPosts, getAllPosts } = messagesContext;
+
   useEffect(() => {
     getPostReplies();
   }, []);
-  const arr = ["1", "2", "3"];
+
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -37,7 +28,7 @@ const AllMessages = () => {
   useEffect(() => {
     getAllPosts();
   }, []);
-  console.log(allPosts);
+
   return (
     <div class='container messages-all'>
       <AddPostModal open={open} handleClose={handleClose} />
