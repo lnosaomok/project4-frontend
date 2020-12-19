@@ -7,7 +7,6 @@ import Navbar from "./components/layout/Navbar";
 import AlertState from "./context/alert/AlertState";
 import AuthState from "./context/auth/AuthState";
 import RecipesState from "./context/recipes/RecipesState";
-import UserPreferencesState from "./context/userPreferences/UserPreferencesState";
 import Alerts from "./components/alerts/Alerts";
 import setToken from "./utils/setToken";
 import { MessagesState } from "./context/messages/MessagesState";
@@ -30,58 +29,48 @@ function App() {
       <RecipesState>
         <AuthState>
           <AlertState>
-            <UserPreferencesState>
-              <Router>
-                <Navbar />
-                <Alerts />
-                <div>
-                  <Switch>
-                    <Route exact path='/login' component={Login} />
-                    <PrivateRoute
-                      exact
-                      path='/'
-                      component={RecommendedRecipes}
-                    />
-                    <Route exact path='/register' component={Register} />
-                    <PrivateRoute
-                      exact
-                      path='/create'
-                      component={CreateRecipe}
-                    />
+            <Router>
+              <Navbar />
+              <Alerts />
+              <div>
+                <Switch>
+                  <Route exact path='/login' component={Login} />
+                  <PrivateRoute exact path='/' component={RecommendedRecipes} />
+                  <Route exact path='/register' component={Register} />
+                  <PrivateRoute exact path='/create' component={CreateRecipe} />
 
-                    <PrivateRoute
-                      exact
-                      path='/recommended'
-                      component={RecommendedRecipes}
-                    />
-                    <Route
-                      path='/savedrecipes/:index'
-                      component={SavedRecipesIndex}
-                    />
-                    <Route
-                      exact
-                      path='/view'
-                      component={(props) => <ViewRecipe {...props} />}
-                    />
-                    <Route
-                      exact
-                      path='/post'
-                      component={(props) => <ViewPost {...props} />}
-                    />
-                    <Route
-                      exact
-                      path='/showrecipe'
-                      component={(props) => <SavedRecipesView {...props} />}
-                    />
-                    <PrivateRoute
-                      exact
-                      path='/allmessages'
-                      component={AllMessages}
-                    />
-                  </Switch>
-                </div>
-              </Router>
-            </UserPreferencesState>
+                  <PrivateRoute
+                    exact
+                    path='/recommended'
+                    component={RecommendedRecipes}
+                  />
+                  <PrivateRoute
+                    path='/savedrecipes/:index'
+                    component={SavedRecipesIndex}
+                  />
+                  <PrivateRoute
+                    exact
+                    path='/view'
+                    component={(props) => <ViewRecipe {...props} />}
+                  />
+                  <PrivateRoute
+                    exact
+                    path='/post'
+                    component={(props) => <ViewPost {...props} />}
+                  />
+                  <PrivateRoute
+                    exact
+                    path='/showrecipe'
+                    component={(props) => <SavedRecipesView {...props} />}
+                  />
+                  <PrivateRoute
+                    exact
+                    path='/allmessages'
+                    component={AllMessages}
+                  />
+                </Switch>
+              </div>
+            </Router>
           </AlertState>
         </AuthState>
       </RecipesState>
