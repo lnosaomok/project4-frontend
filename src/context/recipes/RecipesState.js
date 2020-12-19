@@ -25,7 +25,9 @@ const RecipesState = (props) => {
 
   const getSavedRecipes = async () => {
     try {
-      const res = await axios.get("/api/recipes");
+      const res = await axios.get(
+        "https://cors-anywhere.herokuapp.com/https://chefsplace.herokuapp.com/api/recipes"
+      );
       dispatch({ type: GET_SAVED_RECIPES, payload: res.data });
     } catch (err) {
       dispatch({ type: GENERAL_ERROR });
@@ -40,7 +42,11 @@ const RecipesState = (props) => {
     };
 
     try {
-      const res = await axios.post("/api/recipes", formData, config);
+      const res = await axios.post(
+        "https://cors-anywhere.herokuapp.com/https://chefsplace.herokuapp.com/api/recipes",
+        formData,
+        config
+      );
 
       dispatch({
         type: SAVE_RECIPE,
@@ -64,7 +70,11 @@ const RecipesState = (props) => {
       },
     };
     try {
-      const res = await axios.post("/api/recipes/update", formData, config);
+      const res = await axios.post(
+        "https://cors-anywhere.herokuapp.com/https://chefsplace.herokuapp.com/api/recipes/update",
+        formData,
+        config
+      );
     } catch (err) {
       dispatch({
         type: GENERAL_ERROR,
