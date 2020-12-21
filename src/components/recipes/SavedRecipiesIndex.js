@@ -94,6 +94,10 @@ export default function SavedRecipesIndex(props) {
       })
     : null;
 
+  const openUrl = (url) => {
+    window.open(`${url}`, `blank`);
+  };
+
   return saved_recipes !== null && !loading ? (
     saved_recipes.length > 0 ? (
       <>
@@ -252,7 +256,16 @@ export default function SavedRecipesIndex(props) {
                       })}
                     </ul>
                   ) : (
-                    <a href='#'>Cooking Instructions </a>
+                    <a
+                      href='#'
+                      onClick={() => {
+                        openUrl(
+                          saved_recipes[props.match.params.index].recipe.url
+                        );
+                      }}
+                    >
+                      Cooking Instructions{" "}
+                    </a>
                   )}
                 </div>
               </div>
@@ -263,10 +276,10 @@ export default function SavedRecipesIndex(props) {
     ) : (
       <div class='container container-inner'>
         <div class='card'>
-          <h4>
-            No recipes saved yet, search for recipes on the{" "}
-            <a href='/recipies'>search recipes page</a>{" "}
-          </h4>
+          <h5>
+            No recipes saved yet, search for recipes recommended by other users
+            on the <a href='/recommended'>recommended recipes page</a>{" "}
+          </h5>
         </div>
       </div>
     )

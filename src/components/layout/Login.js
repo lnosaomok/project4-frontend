@@ -18,7 +18,7 @@ const Login = (props) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      props.history.push("/");
+      props.history.push("/recommended");
     }
     if (error === "Invalid Credentials") {
       setAlert(error, "danger");
@@ -64,13 +64,6 @@ const Login = (props) => {
                   onChange(e);
                 }}
               />
-              <span
-                className='helper-text'
-                data-error='wrong'
-                data-success='right'
-              >
-                Username must be minimun 6 characters
-              </span>
             </div>
             <div className='input-field col s12'>
               <input
@@ -84,13 +77,6 @@ const Login = (props) => {
                   onChange(e);
                 }}
               />
-              <span
-                className='helper-text'
-                data-error='wrong'
-                data-success='right'
-              >
-                Password must be minimun 6 characters
-              </span>
             </div>
 
             <div className=''>

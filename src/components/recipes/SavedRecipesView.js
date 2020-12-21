@@ -96,6 +96,9 @@ const SavedRecipesView = (props) => {
       })
     : null;
 
+  const openUrl = (url) => {
+    window.open(`${url}`, `blank`);
+  };
   return saved_recipes !== null && data !== undefined && !loading ? (
     saved_recipes.length > 0 ? (
       <>
@@ -238,7 +241,12 @@ const SavedRecipesView = (props) => {
                       })}
                     </ul>
                   ) : (
-                    <a href='#'>
+                    <a
+                      href='#'
+                      onClick={() => {
+                        openUrl(data.recipe.url);
+                      }}
+                    >
                       Cooking Instructions from {data.recipe.source}
                     </a>
                   )}

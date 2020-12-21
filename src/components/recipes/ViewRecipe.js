@@ -81,7 +81,9 @@ const ViewRecipe = (props) => {
     M.toast({ html: "Saved" });
   };
   const { recipeRatingsStars, starCounts } = data;
-
+  const openUrl = (url) => {
+    window.open(`${url}`, `blank`);
+  };
   return (
     <>
       <NutritionModal
@@ -195,7 +197,12 @@ const ViewRecipe = (props) => {
                       })}
                     </ul>
                   ) : (
-                    <a href='#'>
+                    <a
+                      href='#'
+                      onClick={() => {
+                        openUrl(data.recipe.recipe.url);
+                      }}
+                    >
                       Cooking Instructions from {data.recipe.recipe.source}
                     </a>
                   )}
