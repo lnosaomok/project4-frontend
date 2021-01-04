@@ -31,9 +31,7 @@ const AuthState = (props) => {
     setAuthToken(localStorage.token);
 
     try {
-      const res = await axios.get(
-        "https://cors-anywhere.herokuapp.com/https://chefsplace.herokuapp.com/api/auth"
-      );
+      const res = await axios.get("https://chefsplace.herokuapp.com/api/auth");
       dispatch({
         type: USER_LOADED,
         payload: res.data,
@@ -54,7 +52,7 @@ const AuthState = (props) => {
 
     try {
       const res = await axios.post(
-        "https://cors-anywhere.herokuapp.com/https://chefsplace.herokuapp.com/api/users",
+        "https://chefsplace.herokuapp.com/api/users",
         formData,
         config
       );
@@ -82,7 +80,7 @@ const AuthState = (props) => {
 
     try {
       const res = await axios.post(
-        "https://cors-anywhere.herokuapp.com/https://chefsplace.herokuapp.com/api/auth",
+        "https://chefsplace.herokuapp.com/api/auth",
         formData,
         config
       );
