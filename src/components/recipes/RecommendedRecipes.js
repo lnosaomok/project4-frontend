@@ -39,7 +39,7 @@ const RecommendedRecipes = () => {
               filtered_recommended_recipes !== null ? (
                 filtered_recommended_recipes
                   .filter((recipe) => {
-                    return recipe.message.name && recipe.message.ecipe;
+                    return recipe.message.recipe;
                   })
                   .map((recipe) => (
                     <div id='recommend-item'>

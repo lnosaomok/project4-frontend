@@ -60,12 +60,14 @@ export default (state, action) => {
     case FILTER_RECOMMENDED_RECIPES:
       return {
         ...state,
-        filtered_recommended_recipes: state.reccommended_recipes.filter(
-          (recipe) => {
+        filtered_recommended_recipes: state.reccommended_recipes
+          .filter((recipe) => {
+            return recipe.message.recipe;
+          })
+          .filter((recipe) => {
             const regex = new RegExp(`${action.payload}`, "gi");
             return recipe.message.recipe.label.match(regex);
-          }
-        ),
+          }),
       };
     case CLEAR_FILTERED_RECOMMENDED_RECIPES:
       return {
