@@ -33,8 +33,6 @@ const AllMessages = () => {
     return b.message.date - a.message.date;
   });
 
-  console.log(sortedPosts);
-
   return (
     <div class='container messages-all'>
       <AddPostModal open={open} handleClose={handleClose} />
@@ -48,7 +46,7 @@ const AllMessages = () => {
         >
           Add Post
         </Button>{" "}
-        {allPosts &&
+        {sortedPosts &&
           sortedPosts.map((item) => {
             return <AllMessagesItem post={item} />;
           })}

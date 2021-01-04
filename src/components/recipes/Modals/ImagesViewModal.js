@@ -6,8 +6,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ImageTileList from "../ImageTileList";
 export default function ImagesViewDialog({ open, handleClose, allImages }) {
-  console.log(allImages);
-
   let tileData = [];
   allImages.forEach((element) => {
     tileData.push({
@@ -18,7 +16,6 @@ export default function ImagesViewDialog({ open, handleClose, allImages }) {
     });
   });
 
-  console.log(tileData);
   return (
     <div>
       <Dialog

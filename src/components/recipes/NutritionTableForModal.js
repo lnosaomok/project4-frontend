@@ -23,7 +23,6 @@ export default function NutritionTableForModal({ allNutrients }) {
   let rows = [];
 
   if (allNutrients) {
-    console.log(allNutrients);
     let allNutrientsFiltered = allNutrients.filter((nutrient) => {
       return (
         nutrient !== null && nutrient !== "undefined" && nutrient !== undefined

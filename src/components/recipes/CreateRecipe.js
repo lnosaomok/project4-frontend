@@ -29,7 +29,7 @@ const CreateRecipe = () => {
   const [loading, setLoading] = useState(false);
   const [nutritionInfo, setNutritionInfo] = useState(null);
   const [count, setCount] = useState(0);
-  const [file, selectFile] = useFileUpload();
+  const [file, setFile] = useState("");
   const [error, setError] = useState(null);
   const classes = useStyles();
 
@@ -43,6 +43,10 @@ const CreateRecipe = () => {
     setRecipeName(e.target.value);
   };
 
+  const onChangeRecipeImage = (e) => {
+    setFile(e.target.value);
+  };
+
   const onChangeRecipeIngr = (e) => {
     setRecipeIngr(e.target.value);
   };
@@ -52,17 +56,15 @@ const CreateRecipe = () => {
   const onSubmit = async (e) => {
     e.preventDefault(e);
     //// get the values of all the "steps" elements
-    document.querySelectorAll("#step0").forEach((item) => {
-      if (!item === "") {
-        instructionValues.push(item.value);
-      }
+    await document.querySelectorAll("#step0").forEach((item) => {
+      instructionValues.push(item.value);
     });
 
     if (recipeIngr === "" || recipeName === "") {
       M.toast({ html: "Please fill out all required fields" });
-    } else if (file === null) {
-      setAlert("Please upload an image", "danger");
-      M.toast({ html: "Please upload an image" });
+    } else if (file === "") {
+      setAlert("Please add an image file link", "danger");
+      M.toast({ html: "Please add an image file link" });
     } else if (instructionValues.includes("")) {
       M.toast({ html: "Please complete all instruction steps" });
     } else {
@@ -70,7 +72,7 @@ const CreateRecipe = () => {
         calories: nutritionInfo.calories,
         label: recipeName,
         ingredientLines: recipeIngr.split(","),
-        image: file.source,
+        image: file,
         recipe_yield: nutritionInfo.yield,
         source: instructionValues,
         allNutrients: Object.values(nutritionInfo.totalDaily),
@@ -79,10 +81,8 @@ const CreateRecipe = () => {
 
       /////"personal type indicated the user created the recipe"
       let type = "personal";
-
       saveRecipe({ recipe, type });
       M.toast({ html: "Recipe Created!" });
-      window.location.reload();
     }
   };
 
@@ -143,7 +143,6 @@ const CreateRecipe = () => {
       setLoading(true);
 
       axios.post(url, reqObj, config).then(function (response, error) {
-        console.log(response);
         if (error) {
           setError(error);
           console.log(error, "erro");
@@ -185,28 +184,26 @@ const CreateRecipe = () => {
             </div>
           </div>
 
-          <div className='row'>
-            <Button
-              variant='contained'
-              color='grey'
-              id='focus-transparent'
-              className={classes.button}
-              startIcon={<CloudUploadIcon />}
-              onClick={() => {
-                selectFile();
-              }}
-            >
-              Upload Recipe Image (required)
-            </Button>
-            <div className='img-div'>
-              {" "}
-              {file ? (
-                <div>
-                  <img src={file.source} alt='preview' />
-                </div>
-              ) : (
-                <span> No file selected</span>
-              )}
+          <div class='row'>
+            <div class='input-field col s6'>
+              <input
+                value={file}
+                onChange={(e) => {
+                  onChangeRecipeImage(e);
+                }}
+                name='image'
+                id='image'
+                type='text'
+                class='validate'
+                autoComplete='off'
+              />
+
+              <FormHelperText id='outlined-weight-helper-text'>
+                <Typography variant='subtitle1' gutterBottom>
+                  Recipe Image Link (required, image must show what recipe will
+                  yield )
+                </Typography>
+              </FormHelperText>
             </div>
           </div>
 

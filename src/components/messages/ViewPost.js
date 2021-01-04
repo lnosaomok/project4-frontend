@@ -7,9 +7,18 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import MessagesContext from "../../context/messages/MessagesContext";
 import AuthContext from "../../context/auth/AuthContext";
+import Spinner from "../layout/Spinner";
 
 const ViewPost = (props) => {
   const { data } = props.location;
+
+  if (data) {
+    localStorage.setItem("recipePostView", JSON.stringify(data));
+  }
+
+  let recipePostItem = localStorage.recipePostView
+    ? JSON.parse(localStorage.recipePostView)
+    : null;
   const [postReply, setPostReply] = useState("");
   const authContext = useContext(AuthContext);
   const { user } = authContext;
@@ -32,7 +41,7 @@ const ViewPost = (props) => {
   let messagePostReplies =
     postReplies && postReplies.length > 0
       ? postReplies.filter((item) => {
-          return item.messageTimetoken === data.post.timetoken;
+          return item.messageTimetoken === recipePostItem.post.timetoken;
         })
       : [];
 
@@ -40,7 +49,7 @@ const ViewPost = (props) => {
     let channel = "ALL_USERS1";
     let username = user.username;
     let reply = `${username},${postReply}`;
-    addMessageAction(channel, data.post.timetoken, reply);
+    addMessageAction(channel, recipePostItem.post.timetoken, reply);
     setPostReply("");
   };
 
@@ -61,88 +70,100 @@ const ViewPost = (props) => {
   const classes = useStyles();
 
   return (
-    <div className='card container' id='container'>
-      <div id='post-div'>
-        <Card className={classes.root} id='message-item'>
-          <CardActionArea id='focus-transparent'>
-            <CardContent>
-              <Typography
-                variant='subtitle2'
-                color='textSecondary'
-                component='p'
-              >
-                <i class='material-icons'>person_outline</i>{" "}
-                {data.post.message.name}
-              </Typography>
-              <Typography variant='h4' color='primary' component='p'>
-                {data.post.message.postMessage}
-              </Typography>
-              <Button size='small' color='textsecondary'>
-                <i class='material-icons'>comment</i>
-                {` ${messagePostReplies.length}`}
-              </Button>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </div>
-      <div id='space'></div>
-      <div id='replies-card'>
-        <Card className={classes.root} id='message-item'>
-          <CardActionArea id='focus-transparent'>
-            <CardContent>
-              <div className='input-field search-box'>
-                <input
-                  className='autocomplete '
-                  id='round'
-                  type='text'
-                  value={postReply}
-                  onChange={(e) => {
-                    onChangePostReply(e);
-                  }}
-                  required
-                />
+    <>
+      {recipePostItem ? (
+        <div>
+          <div className='card container' id='container'>
+            <div id='post-div'>
+              <Card className={classes.root} id='message-item'>
+                <CardActionArea id='focus-transparent'>
+                  <CardContent>
+                    <Typography
+                      variant='subtitle2'
+                      color='textSecondary'
+                      component='p'
+                    >
+                      <i class='material-icons'>person_outline</i>{" "}
+                      {recipePostItem.post.message.name}
+                    </Typography>
+                    <Typography variant='h4' color='primary' component='p'>
+                      {recipePostItem.post.message.postMessage}
+                    </Typography>
+                    <Button size='small' color='textsecondary'>
+                      <i class='material-icons'>comment</i>
+                      {` ${messagePostReplies.length}`}
+                    </Button>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </div>
+            <div id='space'></div>
+            <div id='replies-card'>
+              <Card className={classes.root} id='message-item'>
+                <CardActionArea id='focus-transparent'>
+                  <CardContent>
+                    <div className='input-field search-box'>
+                      <input
+                        className='autocomplete '
+                        id='round'
+                        type='text'
+                        value={postReply}
+                        onChange={(e) => {
+                          onChangePostReply(e);
+                        }}
+                        required
+                      />
 
-                <button
-                  type='submit'
-                  className='btn small waves-effect waves-light'
-                  id='reply-post'
-                  onClick={() => {
-                    publishReply();
-                  }}
-                >
-                  Reply
-                </button>
-              </div>
-              <Typography
-                variant='h6'
-                color='textSecondary'
-                component='h4'
-              ></Typography>
-              {messagePostReplies &&
-                messagePostReplies.map((reply) => {
-                  let text = reply.value.split(",")[1];
-                  return (
-                    <div>
-                      <Typography
-                        variant='subtitle2'
-                        color='textSecondary'
-                        component='p'
-                        id='replies-header'
+                      <button
+                        type='submit'
+                        className='btn small waves-effect waves-light'
+                        id='reply-post'
+                        onClick={() => {
+                          publishReply();
+                        }}
                       >
-                        {`${reply.value.split(",")[0]}`}
-                      </Typography>
-                      <Typography gutterBottom variant='h6' component='h2'>
-                        {" "}
-                        {text}
-                      </Typography>
+                        Reply
+                      </button>
                     </div>
-                  );
-                })}
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </div>
-    </div>
+                    <Typography
+                      variant='h6'
+                      color='textSecondary'
+                      component='h4'
+                    ></Typography>
+                    {messagePostReplies &&
+                      messagePostReplies.map((reply) => {
+                        let text = reply.value.split(",")[1];
+                        return (
+                          <div>
+                            <Typography
+                              variant='subtitle2'
+                              color='textSecondary'
+                              component='p'
+                              id='replies-header'
+                            >
+                              {`${reply.value.split(",")[0]}`}
+                            </Typography>
+                            <Typography
+                              gutterBottom
+                              variant='h6'
+                              component='h2'
+                            >
+                              {" "}
+                              {text}
+                            </Typography>
+                          </div>
+                        );
+                      })}
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <Spinner />
+      )}
+    </>
   );
 };
 

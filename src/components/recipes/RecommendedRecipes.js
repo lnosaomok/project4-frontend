@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import useInitializeListeners from "../../utils/useInitializeListeners";
 import MessagesContext from "../../context/messages/MessagesContext";
-import Spinner from "../../components/layout/Spinner";
+import Spinner from "../layout/Spinner";
 import RecommendedRecipesItem from "./RecommendedRecipesItem";
 import FilterRecommended from "./FilterRecommended";
 
@@ -23,7 +23,6 @@ const RecommendedRecipes = () => {
     getReccomendedRecipes();
     getRatings();
   }, []);
-
   //// make sure no duplicates
   let ratings = [...new Set(recipeRatings)];
 
@@ -38,28 +37,36 @@ const RecommendedRecipes = () => {
             reccommended_recipes.length > 0 &&
             !loading ? (
               filtered_recommended_recipes !== null ? (
-                filtered_recommended_recipes.map((recipe) => (
-                  <div id='recommend-item'>
-                    <RecommendedRecipesItem
-                      recipe={recipe.message}
-                      timetoken={recipe.timetoken}
-                      ratings={ratings}
-                    />
-                  </div>
-                ))
+                filtered_recommended_recipes
+                  .filter((recipe) => {
+                    return recipe.message.name && recipe.message.ecipe;
+                  })
+                  .map((recipe) => (
+                    <div id='recommend-item'>
+                      <RecommendedRecipesItem
+                        recipe={recipe.message}
+                        timetoken={recipe.timetoken}
+                        ratings={ratings}
+                      />
+                    </div>
+                  ))
               ) : (
-                reccommended_recipes.map((recipe) => (
-                  <div id='recommend-item'>
-                    <RecommendedRecipesItem
-                      recipe={recipe.message}
-                      timetoken={recipe.timetoken}
-                      ratings={ratings}
-                    />
-                  </div>
-                ))
+                reccommended_recipes
+                  .filter((recipe) => {
+                    return recipe.message.recipe;
+                  })
+                  .map((recipe) => (
+                    <div id='recommend-item'>
+                      <RecommendedRecipesItem
+                        recipe={recipe.message}
+                        timetoken={recipe.timetoken}
+                        ratings={ratings}
+                      />
+                    </div>
+                  ))
               )
             ) : (
-              <Spinner />
+              <p>No recipies to recommend</p>
             )}
           </div>
         </div>

@@ -13,6 +13,7 @@ import Rating from "@material-ui/lab/Rating";
 import { withStyles } from "@material-ui/core/styles";
 import { useEffect } from "react";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import Spinner from "../layout/Spinner";
 
 const useStyles = makeStyles({
   root: {
@@ -41,7 +42,6 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
   }, []);
 
   const classes = useStyles();
-
   /////get the images that have been uploaded for this recipe
   let imagesForRecipe =
     imageFilesList && imageFilesList.length > 0
@@ -105,65 +105,69 @@ export default function RecommendedRecipesItem({ recipe, timetoken }) {
   });
 
   return (
-    <Card className={classes.root} id='focus-transparent'>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image={recipe.recipe.image}
-          title={recipe.recipe.label}
-        />
-        <CardContent>
-          <Typography gutterBottom variant='h6' component='h3'>
-            {recipe.recipe.label}
-          </Typography>
-          <Typography gutterBottom variant='p' component='p'>
-            Shared by {recipe.name}
-          </Typography>
-          <div className='rating-text'>
-            <StyledRating
-              name='customized-color'
-              value={recipeRatingsStars}
-              defaultValue={0}
-              readOnly
-              getLabelText={(value) =>
-                `${value} Heart${value !== 1 ? "s" : ""}`
-              }
-              precision={0.1}
-              icon={<FavoriteIcon fontSize='inherit' />}
+    <>
+      <div>
+        <Card className={classes.root} id='focus-transparent'>
+          <CardActionArea>
+            <CardMedia
+              className={classes.media}
+              image={recipe.recipe.image}
+              title={recipe.recipe.label}
             />
+            <CardContent>
+              <Typography gutterBottom variant='h6' component='h3'>
+                {recipe.recipe.label}
+              </Typography>
+              <Typography gutterBottom variant='p' component='p'>
+                Shared by {recipe.name}
+              </Typography>
+              <div className='rating-text'>
+                <StyledRating
+                  name='customized-color'
+                  value={recipeRatingsStars}
+                  defaultValue={0}
+                  readOnly
+                  getLabelText={(value) =>
+                    `${value} Heart${value !== 1 ? "s" : ""}`
+                  }
+                  precision={0.1}
+                  icon={<FavoriteIcon fontSize='inherit' />}
+                />
 
-            <Typography>
-              {starCounts === 0
-                ? ""
-                : starCounts === 1
-                ? `${starCounts} Rating`
-                : `${starCounts} Ratings`}
-            </Typography>
-          </div>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size='small' color='primary'>
-          <Link
-            to={{
-              pathname: "/view",
-              data: {
-                recipe,
-                timetoken,
-                messageCounts,
-                recipeRatingsMessages,
-                recipeRatingsStars,
-                starCounts,
-                allRatings: allRatingsForRecipe,
-                allImages: imagesForRecipe,
-              },
-            }}
-          >
-            {" "}
-            View Recipe
-          </Link>
-        </Button>
-      </CardActions>
-    </Card>
+                <Typography>
+                  {starCounts === 0
+                    ? ""
+                    : starCounts === 1
+                    ? `${starCounts} Rating`
+                    : `${starCounts} Ratings`}
+                </Typography>
+              </div>
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+            <Button size='small' color='primary'>
+              <Link
+                to={{
+                  pathname: "/view",
+                  data: {
+                    recipe,
+                    timetoken,
+                    messageCounts,
+                    recipeRatingsMessages,
+                    recipeRatingsStars,
+                    starCounts,
+                    allRatings: allRatingsForRecipe,
+                    allImages: imagesForRecipe,
+                  },
+                }}
+              >
+                {" "}
+                View Recipe
+              </Link>
+            </Button>
+          </CardActions>
+        </Card>
+      </div>
+    </>
   );
 }

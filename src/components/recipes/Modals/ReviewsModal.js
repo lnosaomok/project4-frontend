@@ -10,12 +10,10 @@ import RecipeReviews from "./RecipeReviews";
 import { withStyles } from "@material-ui/core/styles";
 
 export default function NutritionModal({ open, handleClose, allReviews }) {
-  console.log(allReviews);
   let extracted = allReviews[Object.keys(allReviews)[0]];
   const reviewObj = extracted.filter((obj) => {
     return obj.value.charAt(0) === "$";
   });
-  console.log(allReviews);
   return (
     <div>
       <Dialog open={open} aria-labelledby='form-dialog-title'>

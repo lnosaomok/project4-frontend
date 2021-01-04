@@ -1,20 +1,7 @@
 import React from "react";
-import Rating from "@material-ui/lab/Rating";
-import { withStyles } from "@material-ui/core/styles";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 
 const RecipeReviewItem = ({ review }) => {
-  console.log(review);
-  const StyledRating = withStyles({
-    iconFilled: {
-      color: "#ff6d75",
-    },
-    iconHover: {
-      color: "#ff3d47",
-    },
-  })(Rating);
   let transformedResult = {};
   const rating_values = ["0", "1", "2", "3", "4", "5"];
 
@@ -32,8 +19,6 @@ const RecipeReviewItem = ({ review }) => {
   // since data at this point is an object, to get array of values
   // we use Object.values method
   let result = Object.values(data);
-
-  console.log(result);
 
   //const groupedReview = groupByKey(review, "value");
   //console.log(groupedReview);
@@ -54,7 +39,6 @@ const RecipeReviewItem = ({ review }) => {
     }
   });
 
-  console.log(transformedResult);
   const useStyles = makeStyles((theme) => ({
     root: {
       display: "flex",
@@ -72,9 +56,7 @@ const RecipeReviewItem = ({ review }) => {
   return (
     <>
       <div className='review-outer'></div>
-
       <div className='rating-text'></div>
-
       <div>{review.message}</div>
     </>
   );

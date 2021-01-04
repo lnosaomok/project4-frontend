@@ -13,7 +13,7 @@ const Navbar = (props) => {
 
   const onLogout = async () => {
     await logout();
-    <Redirect to='/login' />;
+    window.location.reload();
   };
 
   const authLinks = (
@@ -28,7 +28,7 @@ const Navbar = (props) => {
       </li>
       <li>|</li>
       <li>
-        <Link to='/savedrecipes/0'> Saved Recipes</Link>
+        <Link to='/savedrecipes/0'> My Recipes</Link>
       </li>
       <li>|</li>
       <li>

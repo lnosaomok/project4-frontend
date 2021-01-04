@@ -174,7 +174,7 @@ export default function SavedRecipesIndex(props) {
                     <h4>
                       {saved_recipes[props.match.params.index].recipe.label}
                     </h4>
-                    {saved_recipes[props.match.params.index].recipe.type ===
+                    {saved_recipes[props.match.params.index].type ===
                     "personal" ? (
                       <CollectionButton
                         recipe={
@@ -276,10 +276,10 @@ export default function SavedRecipesIndex(props) {
     ) : (
       <div class='container container-inner'>
         <div class='card'>
-          <h5>
+          <h6>
             No recipes saved yet, search for recipes recommended by other users
             on the <a href='/recommended'>recommended recipes page</a>{" "}
-          </h5>
+          </h6>
         </div>
       </div>
     )

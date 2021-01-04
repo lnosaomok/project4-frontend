@@ -259,10 +259,10 @@ const SavedRecipesView = (props) => {
     ) : (
       <div class='container container-inner'>
         <div class='card'>
-          <h4>
+          <h5>
             No recipes saved yet, search for recipes on the{" "}
             <a href='/recipies'>search recipes page</a>{" "}
-          </h4>
+          </h5>
         </div>
       </div>
     )
