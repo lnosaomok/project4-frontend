@@ -232,13 +232,13 @@ const CreateRecipe = () => {
                 getRecipeNutrition();
               }}
             >
-              Generate Ingredients Nutrition Data
+              Click here to Generate Ingredients Nutrition Data(required)
             </Button>
           </div>
 
           <div>
             {loading && <Spinner />}
-            {!loading && nutritionInfo !== null && (
+            {!loading && nutritionInfo !== null ? (
               <>
                 <div>
                   <h5>Calories: {nutritionInfo.calories}</h5>
@@ -257,6 +257,8 @@ const CreateRecipe = () => {
                   />
                 </div>
               </>
+            ) : (
+              ""
             )}
 
             {error && (
