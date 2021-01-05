@@ -35,7 +35,7 @@ function App() {
               <div>
                 <Switch>
                   <Route exact path='/login' component={Login} />
-                  <Route exact path='/' component={RecommendedRecipes} />
+                  <Route exact path='/' component={Login} />
                   <Route exact path='/register' component={Register} />
                   <PrivateRoute exact path='/create' component={CreateRecipe} />
 
