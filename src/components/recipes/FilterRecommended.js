@@ -34,7 +34,7 @@ const FilterRecommended = () => {
               id='icon_prefix2'
               ref={searchRef}
               class='materialize-textarea'
-              placeholder='Filter Recipes...'
+              placeholder='Search Recipes...'
               onChange={onChange}
             ></textarea>
 

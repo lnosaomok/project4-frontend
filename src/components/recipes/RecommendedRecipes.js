@@ -31,6 +31,7 @@ const RecommendedRecipes = () => {
       <div class='container' id='container'>
         <FilterRecommended />{" "}
         <div id=''>
+          <h5>Recipes other users have shared: </h5>
           <div id='recommended-recipes'>
             {" "}
             {reccommended_recipes !== null &&
