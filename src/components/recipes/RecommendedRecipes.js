@@ -31,7 +31,7 @@ const RecommendedRecipes = () => {
       <div class='container' id='container'>
         <FilterRecommended />{" "}
         <div id=''>
-          <h5>Recipes shared by users: </h5>
+          <h5>Featured Recipes: </h5>
           <div id='recommended-recipes'>
             {" "}
             {reccommended_recipes !== null &&
@@ -67,7 +67,7 @@ const RecommendedRecipes = () => {
                   ))
               )
             ) : (
-              <p>No recipies to recommend</p>
+              <Spinner />
             )}
           </div>
         </div>
