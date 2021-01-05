@@ -55,7 +55,7 @@ const RecipesState = (props) => {
     } catch (err) {
       dispatch({
         type: GENERAL_ERROR,
-        payload: err.response.data.msg,
+        payload: err,
       });
     }
   };
@@ -78,7 +78,7 @@ const RecipesState = (props) => {
     } catch (err) {
       dispatch({
         type: GENERAL_ERROR,
-        payload: err.response.data.msg,
+        payload: err,
       });
     }
   };
