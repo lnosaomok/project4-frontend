@@ -36,7 +36,7 @@ const Navbar = (props) => {
       </li>
       <li>|</li>
       <li>
-        <Link to='/allmessages'> All Messages</Link>
+        <Link to='/allmessages'> Q&A Channel</Link>
       </li>
       <li>|</li>
       <li>Hello {user && user.username}</li>
