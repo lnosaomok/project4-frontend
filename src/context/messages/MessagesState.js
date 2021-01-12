@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import MessagesContext from "./MessagesContext";
 import MessagesReducer from "./MessagesReducer";
 import PubNub from "pubnub";
-import pubnubConfig from "../../pubnub.config.json";
+import pubnubConfig from "../../pubsub/pubnub.config.json";
 import {
   ADD_RECCOMENDED_RECIPE,
   GET_RECCOMENDED_RECIPES,

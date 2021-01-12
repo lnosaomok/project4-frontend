@@ -7,7 +7,7 @@
 
 # testing
 /coverage
-
+/pubsub/pubnub.config.json
 # production
 /build
 .env
