@@ -208,7 +208,7 @@ export const MessagesState = (props) => {
     });
 
     let urlsArr = [];
-    if (imagefiles) {
+    if (imagefiles && imagefiles.channels.FILE_CHANNEL !== undefined) {
       imagefiles.channels.FILE_CHANNEL.forEach((element) => {
         let imgVal = pubnub.getFileUrl({
           channel: "FILE_CHANNEL",

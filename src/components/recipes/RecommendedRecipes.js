@@ -35,6 +35,7 @@ const RecommendedRecipes = () => {
           <div id='recommended-recipes'>
             {" "}
             {reccommended_recipes !== null &&
+            reccommended_recipes !== undefined &&
             reccommended_recipes.length > 0 &&
             !loading ? (
               filtered_recommended_recipes !== null ? (
